@@ -1,0 +1,12 @@
+body {
+    background-color: rgb(255, 255, 255);
+}
+
+.register {
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
