@@ -1,38 +1,18 @@
 package main
 
 import (
-	"flag"
-	"html/template"
 	"log"
 	"net/http"
-	"path/filepath"
-	"sync"
+
+	"realtime-forum/controllers"
 )
 
-type templateHandler struct {
-	once     sync.Once
-	filename string
-	templ    *template.Template
-}
-
-func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	t.once.Do(func() {
-		t.templ = template.Must(template.ParseFiles(filepath.Join("ui", t.filename)))
-	})
-	t.templ.Execute(w, r)
-}
-
 func main() {
-	address := flag.String( /* name: */ "address" /* value: */, ":8080" /* usage: */, "The address of the application.")
-	flag.Parse()
-	r := newRoom()
-	http.Handle("/", &templateHandler{filename: "html/index.html"})
-	http.Handle("/room", r)
-	// start the web server
-	go r.run()
+	http.HandleFunc("/", controllers.Index)
 
-	log.Println("Starting web server on", *address)
-	if err := http.ListenAndServe(*address, nil); err != nil {
-		log.Fatal("ListenAndServe:", err)
+	log.Print("Starting server on http://localhost:3003")
+	err := http.ListenAndServe(":3003", nil)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

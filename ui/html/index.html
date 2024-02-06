@@ -1,62 +1,39 @@
-<html>
-  <head>
-    <title>Chat</title>
-    <style>
-
-      input { display: block; }
-      ul    { list-style: none; }
-
-    </style>
-  </head>
-  <body>
-
-    <ul id="messages"></ul>
-    <form id="chatbox">
-      <textarea></textarea>
-      <input type="submit" value="Send" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>User Registration</h2>
+    <form action="/register" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <label for="firstname">First Name:</label><br>
+        <input type="text" id="firstname" name="firstname" required><br><br>
+        
+        <label for="lastname">Last Name:</label><br>
+        <input type="text" id="lastname" name="lastname" required><br><br>
+        
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="age" min="18" required><br><br>
+        
+        <label for="gender">Gender:</label><br>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select><br><br>
+        
+        <input type="submit" value="Register">
     </form>
-
-
-
-    
-<!-- 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>
-
-      $(function(){
-
-        var socket = null;
-        var msgBox = $("#chatbox textarea");
-        var messages = $("#messages");
-
-        $("#chatbox").submit(function(){
-
-          if (!msgBox.val()) return false;
-          if (!socket) {
-            alert("Error: There is no socket connection.");
-            return false;
-          }
-
-          socket.send(msgBox.val());
-          msgBox.val("");
-          return false;
-
-        });
-
-        if (!window["WebSocket"]) {
-          alert("Error: Your browser does not support web sockets.")
-        } else {
-          socket = new WebSocket("ws://{{.Host}}/room");
-          socket.onclose = function() {
-            alert("Connection has been closed.");
-          }
-          socket.onmessage = function(e) {
-            messages.append($("<li>").text(e.data));
-          }
-        }
-
-      });
-
-    </script> -->
-  </body>
+    <script src="../script.js"></script>
+</body>
 </html>
