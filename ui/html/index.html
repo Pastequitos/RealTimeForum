@@ -6,38 +6,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registration</title>
   <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/bg.css">
+
 </head>
 
 <body>
-  <div class="register">
-    <h2>User Registration</h2>
-
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-
-    <label for="firstname">First Name:</label>
-    <input type="text" id="firstname" name="firstname" required>
-
-    <label for="lastname">Last Name:</label>
-    <input type="text" id="lastname" name="lastname" required>
-
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" min="18" required>
-
-    <label for="gender">Gender:</label>
-    <select id="gender" name="gender" required>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
-    <input type="submit" value="Register" id="register">
+  <header>
+    <h2 class="pagetitle">SIGN UP</h2>
+  </header>
+  <div class="bg">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+    </svg>
+    <div class="gradient-container">
+      <div class="grad g1"></div>
+      <div class="grad g2"></div>
+      <div class="grad g3"></div>
+      <div class="grad g4"></div>
+      <div class="grad g5"></div>
+      <div class="grad interactive"></div>
+    </div>
   </div>
+
+  <div class="cube">
+    <div class="resgistercube" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="999999"
+      data-tilt-reverse="true" data-tilt-full-page-listening>
+
+      <div class="face left">
+          <div class="input">
+            <input type="text" id="username" name="username" placeholder="">
+            <label for="username">Username</label>
+          </div>
+      </div>
+      <div class="face right"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+
+      <div class="connectiondata face">
+
+
+        <div class="input">
+          <input type="text" id="username" name="username" placeholder="">
+          <label for="username">Username</label>
+        </div>
+
+        <div class="input">
+          <input type="email" id="email" name="email" placeholder="">
+          <label for="email">Email</label>
+        </div>
+
+        <div class="input">
+
+          <input type="password" id="password" name="password" placeholder="">
+          <label for="password">Password</label>
+        </div>
+
+
+        <p id="required-message" style="color:red;"></p>
+        <button class="regbtn" type="submit" value="Register" id="register">Continue</button>
+      </div>
+
+
+
+
+      <div class="userdata face">
+        <div class="back">
+          <div class="hess"></div>
+          <div class="back-arrow"></div>
+          <div class="backtxt">BACK</div>
+        </div>
+
+        <div class="input">
+
+          <input type="text" id="firstname" name="firstname" placeholder="">
+          <label for="firstname">First Name</label>
+        </div>
+
+        <div class="input">
+
+          <input type="text" id="lastname" name="lastname" placeholder="">
+          <label for="lastname">Last Name</label>
+        </div>
+
+        <div class="input">
+
+          <input type="number" id="age" name="age" placeholder="">
+          <label for="age">Age</label>
+        </div>
+        <div class="input">
+
+          <select class="genderselect" id="gender" name="gender" placeholder="">
+            <option value="default">Table</option>
+            <option value="pierre">Pierre</option>
+            <option value="feuille">Feuille</option>
+            <option value="ciseaux">Ciseaux</option>
+            <option value="groseille">Groseille</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <label for="gender">Gender</label>
+          </select>
+        </div>
+        <p id="required-message" style="color:red;"></p>
+        <button class="regbtn" type="submit" value="Register" id="registerdata">Register</button>
+      </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+  </div>
+  <div id="destroy-box"></div>
   <script src="../static/js/script.js"></script>
+  <script src="../static/js/bg.js"></script>
+  <script type="text/javascript" src="../static/js/vanilla-tilt.js"></script>
+  <script type="text/javascript">
+    VanillaTilt.init(document.querySelector(".registercube"), {
+      max: 25,
+      speed: 400
+    });
+  </script>
 </body>
 
 </html>

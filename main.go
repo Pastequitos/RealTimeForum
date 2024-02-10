@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"path"
 
-	"realtime-forum/controllers"
+	"realtimeforum/controllers"
 )
 
 func main() {
 	http.HandleFunc("/", controllers.Index)
+	http.HandleFunc("/register", controllers.Register)
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static"))))
 

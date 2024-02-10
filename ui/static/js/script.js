@@ -1,5 +1,25 @@
-document.getElementById('register').addEventListener('click', function() {
-    // Retrieve input field values
+const cube = document.querySelector('.cube');
+
+document.querySelector('.back').addEventListener('click', () => {
+    cube.style.animation = "return 1s cubic-bezier(0.68,-0.2,0.265,1) forwards";
+    
+})
+
+document.getElementById('register').addEventListener('click', function(event) {
+    event.preventDefault();
+    cube.style.animation = "turn 1s cubic-bezier(0.68,-0.2,0.265,1) forwards";
+
+});
+
+
+document.getElementById('registerdata').addEventListener('click', function(event) {
+    event.preventDefault();
+    const pagetitle = document.querySelector('.pagetitle');
+
+    cube.style.animation = "byecube 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
+    pagetitle.style.translate = "0px -100px";
+
+
     var username = document.getElementById('username').value;
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
@@ -8,16 +28,8 @@ document.getElementById('register').addEventListener('click', function() {
     var age = document.getElementById('age').value;
     var gender = document.getElementById('gender').value;
 
-    // Log the data
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("First Name:", firstname);
-    console.log("Last Name:", lastname);
-    console.log("Age:", age);
-    console.log("Gender:", gender);
 
-    var user_data = {
+    var data = {
         "id" : 0,
         "username": username,
         "email": email,
@@ -28,6 +40,20 @@ document.getElementById('register').addEventListener('click', function() {
         "gender": gender
     };
 
-    var jsonUserData = JSON.stringify(user_data);
-    console.log(jsonUserData);
-});
+    postData('http://localhost:3003/register', data)
+    .then(data => {
+        console.log("register");
+    });
+
+    function postData(url, data) {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json());
+    }
+    console.log("registerdata");
+})
