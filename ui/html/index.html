@@ -39,35 +39,63 @@
       data-tilt-reverse="true" data-tilt-full-page-listening>
 
       <div class="face left">
-          <div class="input">
-            <input type="text" id="username" name="username" placeholder="">
-            <label for="username">Username</label>
-          </div>
       </div>
-      <div class="face right"></div>
+      <div class="face login hide">
+        <div class="input">
+          <input type="text" id="loginusername" name="username" placeholder="">
+          <label for="username">Username</label>
+        </div>
+        <div class="input">
+          <input type="text" id="loginpassword" name="username" placeholder="">
+          <label for="username">Password</label>
+        </div>
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMeCheckbox" name="rememberMe">
+          <label for="rememberMeCheckbox">Remember Me</label>
+        </div>
+        <div class="fgpassword">
+          <div class="hess"></div>
+          <div class="back-arrow"></div>
+          <div class="forgettxt">FORGET PASSWORD ?</div>
+        </div>
+      </div>
+
+
       <div class="face top"></div>
-      <div class="face bottom"></div>
-
-      <div class="connectiondata face">
 
 
+      <div class="face forgetpassword hide">
+        <div class="backtologin">
+          <div class="hess"></div>
+          <div class="back-arrow"></div>
+          <div class="backtxt">BACK</div>
+        </div>
         <div class="input">
           <input type="text" id="username" name="username" placeholder="">
           <label for="username">Username</label>
         </div>
-
         <div class="input">
           <input type="email" id="email" name="email" placeholder="">
           <label for="email">Email</label>
         </div>
+        <button class="rememberpassword" type="submit" value="Register" id="remember">See password</button>
 
+      </div>
+
+
+      <div class="connectiondata face">
         <div class="input">
-
+          <input type="text" id="username" name="username" placeholder="">
+          <label for="username">Username</label>
+        </div>
+        <div class="input">
+          <input type="email" id="email" name="email" placeholder="">
+          <label for="email">Email</label>
+        </div>
+        <div class="input">
           <input type="password" id="password" name="password" placeholder="">
           <label for="password">Password</label>
         </div>
-
-
         <p id="required-message" style="color:red;"></p>
         <button class="regbtn" type="submit" value="Register" id="register">Continue</button>
       </div>
@@ -83,19 +111,16 @@
         </div>
 
         <div class="input">
-
           <input type="text" id="firstname" name="firstname" placeholder="">
           <label for="firstname">First Name</label>
         </div>
 
         <div class="input">
-
           <input type="text" id="lastname" name="lastname" placeholder="">
           <label for="lastname">Last Name</label>
         </div>
 
         <div class="input">
-
           <input type="number" id="age" name="age" placeholder="">
           <label for="age">Age</label>
         </div>

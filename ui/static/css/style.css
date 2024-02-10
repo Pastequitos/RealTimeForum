@@ -40,7 +40,7 @@ header {
 }
 
 .pagetitle {
-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
 }
 
 h2 {
@@ -106,9 +106,20 @@ body {
     from {
         transform: rotate3d(1, -1, 0, 180deg);
     }
-    
+
     to {
         transform: rotate3d(0, 0, 0, 0);
+    }
+}
+
+@keyframes login {
+    0% {
+        transform: rotate3d(1, -1, 0, 180deg);
+    }
+
+    100% {
+        rotate: 540deg;
+        transform: rotate3d(-1, 0, 1, 180deg);
     }
 }
 
@@ -121,6 +132,29 @@ body {
     to {
         transform: rotate3d(0, 0, 0, 540deg);
         translate: 0px 100vh;
+    }
+}
+
+@keyframes forgetpassword {
+    0% {
+        rotate: 540deg;
+        transform: rotate3d(-1, 0, 1, 180deg);
+    }
+
+    100% {
+        rotate: 180deg;
+        transform: rotate3d(0, 1, 1, 180deg);
+    }
+}
+
+@keyframes backforgetpassword {
+    0% {
+        rotate: 180deg;
+        transform: rotate3d(0, 1, 1, 180deg);
+    }
+    100% {
+        rotate: 540deg;
+        transform: rotate3d(-1, 0, 1, 180deg);
     }
 }
 
@@ -140,6 +174,10 @@ body {
     height: var(--cube-size);
     overflow: hidden;
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .input {
@@ -207,11 +245,13 @@ body {
 }
 
 .userdata {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+
     transform: translateZ(calc(var(--cube-size) / -2)) rotateY(180deg) rotate(-90deg);
+}
+
+.hide>* {
+    transition: all 2s ease-in-out;
+    opacity: 0;
 }
 
 .regbtn {
@@ -225,7 +265,7 @@ body {
     padding: 0.6rem;
     border: 2px solid white;
     border-radius: 5px;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, opacity 2s ease-in-out;
 }
 
 .regbtn:hover {
@@ -233,16 +273,35 @@ body {
     background-color: white;
 }
 
+.rememberpassword {
+    font-family: poppins;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-left: 104px;
+    color: white;
+    background: none;
+    padding: 0.6rem;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out, opacity 2s ease-in-out;
+}
+
+.rememberpassword:hover {
+    color: var(--bg-color1);
+    background-color: white;
+}
+
 .left {
-    transform: rotateY(90deg) translateZ(calc(var(--cube-size) / -2));
+    transform: rotateY(90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
-.right {
-    transform: rotateY(-90deg) translateZ(calc(var(--cube-size) / -2));
+.login {
+    transform: rotateY(-90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
-.bottom {
-    transform: rotateX(90deg) translateZ(calc(var(--cube-size) / -2));
+.forgetpassword {
+    transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
 .top {
@@ -260,6 +319,23 @@ body {
     transform: rotate(45deg);
     pointer-events: all;
 }
+
+.backtologin {
+    top: -50px;
+    left: -50px;
+    transform-origin: center;
+    position: absolute;
+    background-color: white;
+    height: 100px;
+    width: 100px;
+    transform: rotate(45deg);
+    pointer-events: all;
+}
+
+.backtologin:hover .backtxt {
+    transform: translate(75px, 5px);
+}
+
 
 .back-arrow {
     pointer-events: none;
@@ -299,5 +375,59 @@ body {
 
 .back:hover .backtxt {
     transform: translate(75px, 5px);
+}
 
+.fgpassword {
+    top: 350px;
+    left: 350px;
+    transform-origin: center;
+    position: absolute;
+    background-color: white;
+    height: 100px;
+    width: 100px;
+    transform: rotate(225deg);
+    pointer-events: all;
+}
+
+.fgpassword:hover .forgettxt {
+    transform: translate(-85px, 30px);
+}
+
+.forgettxt {
+    pointer-events: none;
+    position: absolute;
+    rotate: -225deg;
+    color: #260546;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: white;
+    border-radius: 50px;
+    z-index: -1;
+    padding-inline: 20px;
+    transform: translate(100px, 30px);
+    transition: all 0.5s ease-in-out;
+    text-wrap: nowrap;
+}
+
+#rememberMeCheckbox {
+    opacity: 0;
+}
+
+.remember-me {
+    font-family: poppins;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    color: white;
+    background: none;
+    padding: 0.6rem;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out, opacity 2s ease-in-out;
+}
+
+
+.remember-me:hover {
+    color: var(--bg-color1);
+    background-color: white;
 }
