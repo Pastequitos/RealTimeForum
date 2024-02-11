@@ -6,11 +6,9 @@ const loginface = document.querySelector('.login')
 const fgpassword = document.querySelector('.forgetpassword')
 
 document.querySelector('.backtologin').addEventListener('click', () => {
-    cube.style.animation = "backforgetpassword 1s cubic-bezier(0.68,-0.2,0.265,1) forwards";
+    cube.style.animation = "backforgetpassword 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
     fgpassword.classList.add('hide')
     loginface.classList.remove('hide');
-
-
 })
 
 document.querySelector('.back').addEventListener('click', () => {
@@ -20,9 +18,8 @@ document.querySelector('.back').addEventListener('click', () => {
 document.querySelector('.fgpassword').addEventListener('click', () => {
     console.log('forget password')
     fgpassword.classList.remove('hide')
-        cube.style.animation = "forgetpassword 1s cubic-bezier(0.68,-0.2,0.265,1) forwards";
+        cube.style.animation = "forgetpassword 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
     loginface.classList.add('hide');
-
 });
 
 document.getElementById('register').addEventListener('click', function (event) {
@@ -42,7 +39,6 @@ document.getElementById('registerdata').addEventListener('click', function (even
 
     cube.style.animation = "login 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
     pagetitle.style.translate = "0px -100px";
-
     setTimeout(() => {
         pagetitle.textContent = 'LOGIN';
         pagetitle.style.translate = "0px 0px";
