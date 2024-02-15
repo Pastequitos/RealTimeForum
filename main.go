@@ -11,6 +11,8 @@ import (
 func main() {
 	http.HandleFunc("/", controllers.Index)
 	http.HandleFunc("/register", controllers.Register)
+	http.HandleFunc("/login", controllers.Login)
+	
 
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./ui/static"))))
 

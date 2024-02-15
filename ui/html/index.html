@@ -12,8 +12,9 @@
 
 <body>
   <header>
-    <h2 class="pagetitle">SIGN UP</h2>
+    <h2 class="pagetitle">LOGIN</h2>
   </header>
+
   <div class="bg">
     <svg xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -34,25 +35,51 @@
     </div>
   </div>
 
+  <nav class="menu">
+    <div class="navheader">Forum</div>
+
+    <button class="menuregister" type="submit" id="RegisterMenu"><img class="icon invert"
+        src="../static/media/enter.png">Register</button>
+    <button class="menulogin" type="submit" id="LoginMenu"><img class="icon invert"
+        src="../static/media/login.png">Login</button>
+
+    <div class="navfooter">
+      <img class="icon invert" src="../static/media/loginpass.png">
+      <div class="status">
+        <p class="username">ENZO</p>
+        <div class="onlinestatus">
+          <p>online</p>
+          <span class="onlinecircle"></span>
+        </div>
+      </div>
+
+  </nav>
+
+  <div class="topnotif">
+    <p class="notif"></p>
+    <span class="progressbar"></span>
+  </div>
+
   <div class="cube">
     <div class="resgistercube" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="999999"
       data-tilt-reverse="true" data-tilt-full-page-listening>
 
       <div class="face left">
       </div>
-      <div class="face login hide">
+
+
+      <div class="face login">
         <div class="input">
-          <input type="text" id="loginusername" name="username" placeholder="">
+          <input type="text" id="loginUsername" name="username" placeholder="">
           <label for="username">Username</label>
         </div>
         <div class="input">
-          <input type="text" id="loginpassword" name="username" placeholder="">
+          <input type="password" id="loginPassword" name="username" placeholder="">
           <label for="username">Password</label>
         </div>
-        <div class="remember-me">
-          <input type="checkbox" id="rememberMeCheckbox" name="rememberMe">
-          <label for="rememberMeCheckbox">Remember Me</label>
-        </div>
+
+        <button class="loginbtn" type="submit" value="Login" id="loginbtn">Login</button>
+
         <div class="fgpassword">
           <div class="hess"></div>
           <div class="back-arrow"></div>
@@ -64,18 +91,18 @@
       <div class="face top"></div>
 
 
-      <div class="face forgetpassword hide">
+      <div class="face forgetpassword">
         <div class="backtologin">
           <div class="hess"></div>
           <div class="back-arrow"></div>
           <div class="backtxt">BACK</div>
         </div>
         <div class="input">
-          <input type="text" id="username" name="username" placeholder="">
+          <input type="text" id="forgetUsername" name="username" placeholder="">
           <label for="username">Username</label>
         </div>
         <div class="input">
-          <input type="email" id="email" name="email" placeholder="">
+          <input type="email" id="forgetEmail" name="email" placeholder="">
           <label for="email">Email</label>
         </div>
         <button class="rememberpassword" type="submit" value="Register" id="remember">See password</button>
@@ -83,27 +110,28 @@
       </div>
 
 
-      <div class="connectiondata face">
+      <div class="connectiondata face hide">
+        
         <div class="input">
           <input type="text" id="username" name="username" placeholder="">
           <label for="username">Username</label>
         </div>
         <div class="input">
-          <input type="email" id="email" name="email" placeholder="">
+          <input type="email" id="email" name="email" placeholder="" >
           <label for="email">Email</label>
         </div>
         <div class="input">
           <input type="password" id="password" name="password" placeholder="">
           <label for="password">Password</label>
         </div>
-<!--         <p id="required-message" style="color:red;"></p> -->
-        <button class="regbtn" type="submit" value="Register" id="register">Continue</button>
+        <!--         <p id="required-message" style="color:red;"></p> -->
+        <button class="regbtn" type="submit" id="continue">Continue</button>
       </div>
 
 
 
 
-      <div class="userdata face">
+      <div class="userdata face hide">
         <div class="back">
           <div class="hess"></div>
           <div class="back-arrow"></div>
@@ -137,7 +165,7 @@
             <label for="gender">Gender</label>
           </select>
         </div>
-        <p id="signup-required-message" style="color:red;"></p>
+<!--         <p id="signup-required-message" style="color:red;"></p> -->
         <button class="regbtn" type="submit" value="Register" id="registerdata">Register</button>
       </div>
     </div>
