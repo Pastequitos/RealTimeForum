@@ -9,6 +9,7 @@ const txtnotif = document.querySelector('.notif')
 const progressbar = document.querySelector('.progressbar')
 const navregister = document.getElementById('RegisterMenu')
 const navlogin = document.getElementById('LoginMenu')
+const navusername = document.querySelector('.username')
 let facestatus = "login"
 
 
@@ -39,14 +40,14 @@ navlogin.addEventListener('click', () => {
     }
     facestatus = "login"
     cube.style.transform = "rotateY(0deg) rotateX(0deg) rotateZ(0deg)";
-    pagetitle.style.translate = "0px -100px";
-
+    
     loginface.classList.remove('hide');
     userdataface.classList.add('hide');
     setTimeout(() => {
         registerface.classList.add('hide');
-
+        
     }, 500);
+    pagetitle.style.translate = "0px -100px";
     setTimeout(() => {
         pagetitle.textContent = 'LOGIN';
         pagetitle.style.translate = "0px 0px";
@@ -108,181 +109,88 @@ document.querySelector('.back').addEventListener('click', () => {
     cube.style.transform = "rotateY(90deg) rotateX(-90deg) rotateZ(180deg)";
 });
 
-
-
-
-
-
-document.getElementById('registerdata').addEventListener('click', function (event) {
-    facestatus = "register"
-    event.preventDefault()
-    var username = document.getElementById('username').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
-    var firstname = document.getElementById('firstname').value;
-    var lastname = document.getElementById('lastname').value;
-    var age = document.getElementById('age').value;
-    var gender = document.getElementById('gender').value;
-
-    console.log(username, email, password, firstname, lastname, age, gender);
-
-    if (!username || !email || !password || !firstname || !lastname || !age || !gender) {
-        cube.style.animation = "errorsignup 0.5s ease-in-out forwards";
-        notif.style.animation = "shownotif 7s ease-in-out forwards";
-        txtnotif.textContent = "❌ Looks like you missed a field.";
-        progressbar.style.animation = "progress 7s ease-in-out forwards";
-        setTimeout(() => {
-            cube.style.animation = "";
-        }, 500);
-        setTimeout(() => {
-            resetNotif()
-        }, 7000);
-        return;
-    } else {
-        var data = {
-            "id": 0,
-            "username": username,
-            "email": email,
-            "password": password,
-            "firstname": firstname,
-            "lastname": lastname,
-            "age": age,
-            "gender": gender
-        };
-        
-        
-        
-        
-        
-        
-        
-        postData('http://localhost:3003/register', data)
-        .then(response => response.json())
-
-        .then(data => {
-            const responseType = data.type;
-            if (responseType === "success") {
-                cube.style.transform = "rotateY(0deg) rotateX(0deg) rotateZ(0deg)";
-                console.log("success :", data.msg);
-                    notif.style.animation = "shownotif 7s ease-in-out forwards";
-                    txtnotif.textContent = "✅" + data.msg;
-                    progressbar.style.animation = "progress 7s ease-in-out forwards";
-                    loginface.classList.remove('hide');
-                    registerface.classList.add('hide');
-                    pagetitle.style.translate = "0px -100px";
-                    
-                    setTimeout(() => {
-                        userdataface.classList.add('hide');
-                        pagetitle.textContent = 'LOGIN';
-                        pagetitle.style.translate = "0px 0px";
-                    }, 1000);
-                    setTimeout(() => {
-                        resetNotif()
-                    }, 7000);
-                    return
-                } else {
-                    console.log("error :", data.msg);
-                    cube.style.animation = "errorsignup 0.5s ease-in-out forwards";
-                    notif.style.animation = "shownotif 7s ease-in-out forwards";
-                    txtnotif.textContent = "❌ " + data.msg;
-                    progressbar.style.animation = "progress 7s ease-in-out forwards";
-                    setTimeout(() => {
-                        resetNotif()
-                    }, 7000);
-                    return
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-
-
-
-        function postData(url, data) {
-            return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-        }
-    }
-});
-
-
-
-
-
-
-
-
-
-document.getElementById('loginbtn').addEventListener('click', function (event) {
-    facestatus = "login"
-
-    event.preventDefault();
-
-    var username = document.getElementById('loginUsername').value;
-    var password = document.getElementById('loginPassword').value;
-
-    console.log(username, password);
-
-    var data = {
-        "username": username,
-        "password": password
-    };
-
-    postData('http://localhost:3003/login', data)
-        .then(response => {
-            console.log(response)
-            if (response.ok) {
-                console.log("logged in");
-                cube.style.animation = "loggedin 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
-                txtnotif.innerHTML = "✅ Successfully logged-in !<br>Welcome " + username.charAt(0).toUpperCase() + username.slice(1) + " !";
-                notif.style.animation = "shownotif 7s ease-in-out forwards";
-                progressbar.style.animation = "progress 7s ease-in-out forwards";
-                setTimeout(() => {
-                    resetNotif()
-                }, 7000);
-
-            } else {
-                cube.style.animation = "errorlogin 0.5s ease-in-out forwards";
-                notif.style.animation = "shownotif 7s ease-in-out forwards";
-                txtnotif.textContent = "❌ Oups! invalid username or password";
-                progressbar.style.animation = "progress 7s ease-in-out forwards";
-                setTimeout(() => {
-                    cube.style.animation = "";
-                }, 500);
-                setTimeout(() => {
-                    resetNotif()
-                }, 7000);
-            }
-        });
-
-    function postData(url, data) {
-        return fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    }
-
-    console.log("login");
-});
-
-
-
-
-
-
-
-
 function resetNotif() {
     notif.style.animation = "";
     txtnotif.textContent = "";
     progressbar.style.animation = "";
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to fetch and update user data
+    function updateUserStatus() {
+        fetch('/getusers')
+            .then(response => response.json())
+            .then(users => {
+                const userContainer = document.getElementById('userContainer');
+                userContainer.innerHTML = '';
+
+                users.forEach(user => {
+                    // Create container for each user
+                    const userElement = document.createElement('div');
+                    userElement.className = 'userStatus';
+
+                    // Create and append img element
+                    const userImg = document.createElement('img');
+                    userImg.setAttribute('src', '../static/media/user.png');
+                    userImg.className = 'icon invert user';
+                    userElement.appendChild(userImg);
+
+                    // Create and append status div
+                    const statusDiv = document.createElement('div');
+                    statusDiv.className = 'status';
+
+                    // Create and append username paragraph
+                    const usernameP = document.createElement('p');
+                    usernameP.className = 'username';
+                    usernameP.textContent = user.username.charAt(0).toUpperCase() + user.username.slice(1); // Capitalizing username
+                    statusDiv.appendChild(usernameP);
+
+                    // Create and append online status div
+                    const onlineStatusDiv = document.createElement('div');
+                    onlineStatusDiv.className = 'useronlinestatus';
+
+                    // Create and append online status paragraph
+                    const onlineP = document.createElement('p');
+                    onlineP.textContent = user.connected === 1 ? 'online' : 'offline'; // Adjusting online/offline status
+
+                    // Create and append online circle span
+                    const onlineCircleSpan = document.createElement('span');
+                    onlineCircleSpan.className = "onlinecircle";
+                    onlineCircleSpan.style.backgroundColor = "red"; // Adjust for online/offline
+
+                    if (user.connected === 1) {
+                        onlineCircleSpan.style.backgroundColor = "#3ad323"
+                    }
+
+                    onlineStatusDiv.appendChild(onlineP);
+                    onlineStatusDiv.appendChild(onlineCircleSpan);
+
+                    // Append onlineStatusDiv to statusDiv
+                    statusDiv.appendChild(onlineStatusDiv);
+
+                    // Append statusDiv to userElement
+                    userElement.appendChild(statusDiv);
+
+                    // Append userElement to userContainer
+                    userContainer.appendChild(userElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }
+    /* 
+        // Call updateUserStatus immediately when the page loads
+        updateUserStatus();
+    
+        // Update user status every second (1000 milliseconds)
+        setInterval(updateUserStatus, 1000); */
+});
+
+
+document.querySelector('.settings').addEventListener('click', () => {
+    document.querySelector('.settingdiv').classList.toggle('active');
+    document.getElementById('userContainer').classList.toggle('active');
+
+});

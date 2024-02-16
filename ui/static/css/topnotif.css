@@ -1,0 +1,52 @@
+
+
+.topnotif {
+    transform: translateY(-100px);
+    padding: 15px 20px;
+    margin: 20px;
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+}
+
+.progressbar {
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    transform-origin: left;
+    transform: scaleX(0);
+}
+
+@keyframes progress {
+    99% {
+        transform: scaleX(1);
+    }
+
+    100% {
+        transform: scaleX(0);
+    }
+}
+
+@keyframes shownotif {
+    10% {
+        transform: translateY(0px);
+    }
+
+    90% {
+        transform: translateY(0px);
+    }
+}

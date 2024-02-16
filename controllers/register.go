@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -19,6 +18,7 @@ type UserData struct {
 	Age       int
 	Gender    string
 	Color     string
+	connected int
 }
 
 type Resp struct {
@@ -47,8 +47,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if count > 0 {
-
-		fmt.Println("username already exist")
 		msg := Resp{Msg: "username already exist", Type: "error"}
 		resp, err := json.Marshal(msg)
 		if err != nil {
@@ -63,13 +61,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		// Insert user data into the database
-		_, err = db.Exec("INSERT INTO user_account_data (username, email, password, fname, lname, age, gender) VALUES (?, ?, ?, ?, ?, ?, ?)",
-			user.Username, user.Email, user.Password, user.Firstname, user.Lastname, user.Age, user.Gender)
+		_, err = db.Exec("INSERT INTO user_account_data (username, email, password, fname, lname, age, gender, connected) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			user.Username, user.Email, user.Password, user.Firstname, user.Lastname, user.Age, user.Gender, user.connected)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to insert user data into database. "+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		fmt.Println("username created")
 
 		msg := Resp{Msg: "Successful registration", Type: "success"}
 		resp, err := json.Marshal(msg)
