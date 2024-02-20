@@ -1,5 +1,5 @@
 .cube {
-    display: none;
+/*     display: none; */
     transform-style: preserve-3d;
     transition: all 2s cubic-bezier(0.68, -0.2, 0.5, 1);
     transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);

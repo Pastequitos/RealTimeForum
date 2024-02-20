@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="../static/css/bg.css">
   <link rel="stylesheet" href="../static/css/cube.css">
   <link rel="stylesheet" href="../static/css/topnotif.css">
+  <link rel="stylesheet" href="../static/css/display.css">
+
 
 
 
@@ -16,7 +18,7 @@
 
 <body>
   <header>
-    <h2 class="pagetitle">FORUM</h2>
+    <h2 class="pagetitle">LOGIN</h2>
   </header>
 
   <div class="bg">
@@ -87,9 +89,14 @@
   <!-- 
 transform="rotate(180 75 25) scale(2) translate(-25, -25)" -->
 
-  <div class="display">
 
 
+<div class="display">
+
+
+
+
+    
     <div class="bordertopleft"></div>
     <div class="topleft"></div>
     <svg class="svg" width="100" height="100" viewBox="0 0 48 48">
@@ -119,7 +126,25 @@ transform="rotate(180 75 25) scale(2) translate(-25, -25)" -->
     <div class="leftdisplay"></div>
   </div>
     
-
+  <div class="entiredisplay">
+    <div class="grid-item">1</div>
+    <div class="grid-item">2</div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">
+      <div class="createpost">
+        <input type="text" id="title">
+        <textarea name="inputpost" id="inputpost" cols="30" rows="10"></textarea>
+        <select name="posttype" id="posttype">post type
+          <option value="golang">golang</option>
+          <option value="code">code</option>
+          <option value="text">text</option>
+        </select>
+        <button class="submitpost" id="submitpost">post</button>
+      </div>
+    </div>
+    <div class="grid-item"><div id="postsContainer"></div></div>
+    <div class="grid-item">6</div>
+  </div>
 
 
 
@@ -246,7 +271,8 @@ transform="rotate(180 75 25) scale(2) translate(-25, -25)" -->
   <script src="../static/js/login.js"></script>
   <script src="../static/js/logout.js"></script>
   <script src="../static/js/register.js"></script>
-
+  <script src="../static/js/post.js"></script>
+  
   <script src="../static/js/bg.js"></script>
   <script type="text/javascript" src="../static/js/vanilla-tilt.js"></script>
   <script type="text/javascript">

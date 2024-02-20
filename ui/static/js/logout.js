@@ -13,6 +13,8 @@ function logout() {
             txtnotif.textContent = data.msg;
             progressbar.style.animation = "progress 7s ease-in-out forwards";
             navfooter.style.width = "50px";
+            display.style.translate = "0px 100vh";
+
             setTimeout(() => {
                 onlinestatus.style.display = "none";
                 navusername.textContent = "Invite";
@@ -21,6 +23,15 @@ function logout() {
             setTimeout(() => {
                 resetNotif()
             }, 7000);
+
+            pagetitle.style.translate = "0px -100px";
+            setTimeout(() => {
+                pagetitle.textContent = 'LOGIN';
+                pagetitle.style.translate = "0px 0px";
+                fgpassword.classList.remove('hide');
+            }, 1100);
+
+            
     })
     .catch(error => {
         // Handle any network or parsing errors

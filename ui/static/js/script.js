@@ -11,7 +11,8 @@ const navregister = document.getElementById('RegisterMenu')
 const navlogin = document.getElementById('LoginMenu')
 const navusername = document.querySelector('.username')
 let facestatus = "login"
-
+const display = document.querySelector('.display');
+const screen = document.querySelector('.entiredisplay');
 
 navregister.addEventListener('click', () => {
     if (facestatus == "register") {
@@ -26,7 +27,7 @@ navregister.addEventListener('click', () => {
         loginface.classList.add('hide');
         registerface.classList.remove('hide');
         pagetitle.textContent = 'REGISTER';
-        pagetitle.style.translate = "0px 0px";
+        pagetitle.style.translate = "0px 50px";
     }, 1000);
     setTimeout(() => {
         userdataface.classList.remove('hide');
@@ -194,3 +195,4 @@ document.querySelector('.settings').addEventListener('click', () => {
     document.getElementById('userContainer').classList.toggle('active');
 
 });
+
