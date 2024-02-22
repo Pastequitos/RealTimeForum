@@ -14,6 +14,7 @@ let facestatus = "login"
 const display = document.querySelector('.display');
 const screen = document.querySelector('.entiredisplay');
 
+
 navregister.addEventListener('click', () => {
     if (facestatus == "register") {
         return;
@@ -196,3 +197,51 @@ document.querySelector('.settings').addEventListener('click', () => {
 
 });
 
+
+const createpostscreen = document.querySelector('.createpost');
+const postslider = document.querySelector('.slidetocreatepost');
+let isDragging = false;
+let startX, startRight;
+
+// Met à jour les limites en fonction de la largeur de la fenêtre
+const updateLimits = () => {
+  // Calcul pour déterminer la position droite maximale
+  const maxRight = window.innerWidth / 2 - 194;
+  // Convertit la position droite CSS en valeur numérique pour calculer le déplacement
+  const computedStyle = window.getComputedStyle(createpostscreen);
+  startRight = parseInt(computedStyle.right, 10);
+};
+
+window.addEventListener('load', updateLimits);
+window.addEventListener('resize', updateLimits);
+
+const onMouseDown = (e) => {
+  isDragging = true;
+  startX = e.clientX;
+  updateLimits(); // S'assure que les limites sont à jour
+  
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp, { once: true });
+};
+
+const onMouseMove = (e) => {
+  if (!isDragging) return;
+  const dx = e.clientX - startX;
+  // Calcule la nouvelle position droite en soustrayant dx pour déplacer de droite à gauche
+  let newRight = Math.max(0, startRight - dx); // Empêche la div de dépasser le bord gauche de l'écran
+  
+  // Applique la contrainte de ne pas dépasser la moitié de l'écran moins 194 pixels
+  newRight = Math.min(newRight, window.innerWidth / 2 - 194);
+  
+  createpostscreen.style.right = `${newRight}px`;
+};
+
+const onMouseUp = () => {
+  isDragging = false;
+  document.removeEventListener('mousemove', onMouseMove);
+};
+
+postslider.addEventListener('mousedown', onMouseDown);
+
+// Assurez-vous que la div a une position absolue avec un style droit initial pour permettre le mouvement
+createpostscreen.style.position = 'absolute';

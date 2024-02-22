@@ -309,10 +309,6 @@ header {
     transition: all 1s ease-in-out;
 }
 
-
-
-
-
 .pagetitle {
     transition: all 1s cubic-bezier(0.68, -0.2, 0.5, 1);
 }
@@ -368,35 +364,4 @@ body {
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     transition: all .5s ease-in-out;
-}
-
-
-
-.post {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.post h3 {
-    margin: 0;
-    padding: 0;
-    color: #007bff;
-}
-
-.post p {
-    margin: 10px 0;
-}
-
-.post span {
-    font-size: 0.8em;
-    background-color: #f2f2f2;
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-
-.post div {
-    font-size: 0.75em;
-    color: #666;
 }

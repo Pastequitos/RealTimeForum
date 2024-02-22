@@ -62,7 +62,7 @@ function login() {
                 }, 1100);
 
                 startWS();
-                // displayPost()
+                displayPost();
 
             } else {
                 cube.style.animation = "errorlogin 0.5s ease-in-out forwards";
