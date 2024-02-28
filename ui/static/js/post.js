@@ -40,62 +40,150 @@ document.getElementById('submitpost').addEventListener('click', function () {
 
 
 function displayPost() {
-    console.log("here")
+    console.log("here");
+
+    const rightContainer = document.querySelector('.rightside');
+    const leftContainer = document.querySelector('.leftside');
+
+    // Clear the contents of both containers before appending new posts
+    rightContainer.innerHTML = '';
+    leftContainer.innerHTML = '';
+
     fetch('http://localhost:3003/post', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
         },
     })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
 
+        const sortedData = data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-        .then(response => response.json())
+        postCount = 0; 
 
-
-        .then(data => {
-            console.log(data)
-            for (let i = 0; i < data.length; i++) {
-                appendPosts(data[i])
-            }
-            //ICI   
-        })
-        .catch((error) => {
-            console.error('Error:', error);
+        sortedData.forEach(post => {
+            appendPosts(post);
         });
-    // fetch post en GET, donc golang a faire avec SELECT * FROM posts
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
 
-function appendPosts(post) { // Ajoute 'post' comme paramètre de la fonction
-    const container = document.getElementById('postsContainer');
-    console.log(post.Title)
-    console.log(post.Content)
-    console.log(post.Date)
+let postCount = 0;
 
-    // Crée un nouvel élément div pour chaque post
+function appendPosts(post) {
+
+    const rightContainer = document.querySelector('.rightside'); // Assuming .rightside is a class
+    const leftContainer = document.querySelector('.leftside'); // Assuming .leftside is a class
+
     const postElement = document.createElement('div');
     postElement.classList.add('post');
 
-    // Crée et ajoute le titre
+    const postheaderElement = document.createElement('div');
+    postheaderElement.classList.add('post-header');
+    postElement.appendChild(postheaderElement);
+
+    const userppElement = document.createElement('div');
+    userppElement.classList.add('userpp');
+    userppElement.classList.add('invert');
+    postheaderElement.appendChild(userppElement);
+
+    const userElement = document.createElement('p');
+    userElement.classList.add('postusername');
+    userElement.textContent = capitalize(post.Username);
+    postheaderElement.appendChild(userElement);
+
+    const imgElement = document.createElement('div');
+    imgElement.classList.add('post-image');
+    setBackgroundImageFromUnsplash(post.Title, imgElement);
+    postElement.appendChild(imgElement);
+
     const titleElement = document.createElement('p');
-    titleElement.textContent = `Titre: ${post.Title}`; // Utilise `post.title`
-    postElement.appendChild(titleElement);
+    titleElement.classList.add('post-title');
+    titleElement.textContent = post.Title;
+    imgElement.appendChild(titleElement);
 
-    // Crée et ajoute le contenu
-    const contentElement = document.createElement('p');
-    contentElement.textContent = `Contenu: ${post.Content}`; // Utilise `post.content`
-    postElement.appendChild(contentElement);
-
-    // Crée et ajoute la catégorie
-    const categoryElement = document.createElement('p');
-    categoryElement.textContent = `Catégorie: ${post.Category}`; // Utilise `post.category`
-    postElement.appendChild(categoryElement);
-
-    const dateElement = document.createElement('p');
-    dateElement.textContent = `Date: ${post.Date}`; // Utilise `post.category`
-    postElement.appendChild(dateElement);
-
-    // Ajoute le postElement au conteneur
-    container.appendChild(postElement);
-
+    const postcaptionElement = document.createElement('div');
+    postcaptionElement.classList.add('post-caption');
+    postElement.appendChild(postcaptionElement);
     
+    const contentElement = document.createElement('p');
+    contentElement.classList.add('post-content');
+
+    contentElement.textContent = post.Content;
+    postcaptionElement.appendChild(contentElement);
+
+    const postinteractionElement = document.createElement('div');
+    postinteractionElement.classList.add('post-interactions');
+    postElement.appendChild(postinteractionElement);
+
+    const postlikeElement = document.createElement('span');
+    postlikeElement.classList.add('notliked');
+    postlikeElement.classList.add('invert');
+    postinteractionElement.appendChild(postlikeElement);
+
+    const postcommentElement = document.createElement('span');
+    postcommentElement.classList.add('comment');
+    postcommentElement.classList.add('invert');
+    postinteractionElement.appendChild(postcommentElement);
+
+    const dateElement = document.createElement('div');
+    dateElement.classList.add('post-time');
+    dateElement.textContent = formatDate(post.Date);
+    postElement.appendChild(dateElement);
+/* 
+    const categoryElement = document.createElement('p');
+    categoryElement.classList.add('postcategory');
+    categoryElement.textContent = post.Category;
+    postElement.appendChild(categoryElement);
+    */
+    if (postCount % 2 === 0) {
+        leftContainer.appendChild(postElement);
+    } else {
+        rightContainer.appendChild(postElement);
+    }
+
+    postCount++;
+}
+
+function setBackgroundImageFromUnsplash(searchTerm, element) {
+    const accessKey = 'CuQwGV2t54kmskHozR2lQvRMNWTwhyLAKgRgHqcLJ-M'; // Use your actual Unsplash Access Key
+    const url = `https://api.unsplash.com/search/photos?page=1&query=${encodeURIComponent(searchTerm)}&client_id=${accessKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results && data.results.length > 0) {
+                const imageUrl = data.results[0].urls.regular; // Get the URL of the first image
+                element.style.backgroundImage = `url('${imageUrl}')`; // Set it as the background of the passed element
+            } else {
+                console.log('No images found for ' + searchTerm);
+            }
+        })
+        .catch(error => console.error('Error fetching image:', error));
+}
+
+
+
+
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const now = new Date();
+
+    const diffSeconds = Math.round((now - date) / 1000);
+    const diffMinutes = Math.round(diffSeconds / 60);
+    const diffHours = Math.round(diffMinutes / 60);
+    const diffDays = Math.round(diffHours / 24);
+
+    if (diffMinutes < 1) return "il y a moins d'une minute";
+    else if (diffMinutes < 5) return "il y a moins de 5 minutes";
+    else if (diffMinutes < 15) return "il y a moins de 15 minutes";
+    else if (diffMinutes < 45) return "il y a moins de 45 minutes";
+    else if (diffHours < 24) return `il y a ${diffHours} heures`;
+    else if (diffHours < 2) return "il y a 1 heure";
+    else if (diffDays < 2) return "il y a 1 jour";
+    else return `il y a ${diffDays} jours`;
 }

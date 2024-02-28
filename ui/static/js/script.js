@@ -10,9 +10,9 @@ const progressbar = document.querySelector('.progressbar')
 const navregister = document.getElementById('RegisterMenu')
 const navlogin = document.getElementById('LoginMenu')
 const navusername = document.querySelector('.username')
-let facestatus = "login"
 const display = document.querySelector('.display');
-const screen = document.querySelector('.entiredisplay');
+/* const screen = document.querySelector('.entiredisplay'); */
+let facestatus = "login"
 
 
 navregister.addEventListener('click', () => {
@@ -245,3 +245,10 @@ postslider.addEventListener('mousedown', onMouseDown);
 
 // Assurez-vous que la div a une position absolue avec un style droit initial pour permettre le mouvement
 createpostscreen.style.position = 'absolute';
+
+
+    function capitalize(str) {
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    }
+
+    

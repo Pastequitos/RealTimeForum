@@ -55,7 +55,8 @@ function login() {
                 pagetitle.style.translate = "0px -100px";
                 setTimeout(() => {
                     display.style.translate = "0px 0px";
-                    screen.style.translate = "0px 0px";
+                    display.style.opacity = "1";
+
                     pagetitle.textContent = 'FORUM';
                     pagetitle.style.translate = "0px 0px";
                     fgpassword.classList.remove('hide');

@@ -1,0 +1,162 @@
+
+.post {
+    width: calc(100% - 60px);
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: white;
+}
+
+.rightside {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.leftside {
+    height: 100vh;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: end;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://cdn.futura-sciences.com/buildsv6/images/largeoriginal/b/a/e/bae8edbcb1_97484_eau-salee-mers-oceans.jpg");
+    border-image: fill 0 linear-gradient(transparent, transparent, rgba(0, 0, 0, 0.7));
+    transition: height 0.3s ease-in-out, scale 0.3s ease-in-out;
+}
+
+.post-image:hover {
+    height: 400px;
+}
+
+.post-interactions {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.post-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    border-radius: 0 8px 0 0;
+    padding: 0px 10px;
+    background-color: white;
+    left: 0;
+    color: #260546;
+}
+
+.post-caption {
+    margin-bottom: 15px;
+}
+
+.notliked {
+    height: 25px;
+    width: 25px;
+    background-image: url("../media/notliked.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+}
+
+.post-content {
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.notliked:hover {
+    scale: 0.9;
+}
+
+.liked {
+    background-image: url("../media/liked.png");
+}
+
+.comment {
+    margin-left: 15px;
+    height: 25px;
+    width: 25px;
+    background-image: url("../media/chat-bubble.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(.47, 1.64, .41, .8);
+}
+
+.comment:hover {
+    scale: 0.9;
+}
+
+.post-time {
+    text-align: right;
+    font-size: 0.8em;
+}
+
+.postusername {
+    font-weight: bold;
+}
+
+.options {
+    cursor: pointer;
+}
+
+.userpp {
+    margin-right: 15px;
+    height: 40px;
+    width: 40px;
+    background-image: url("../media/user.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.verticalline {
+    height: 100%;
+    width: 1px;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0.5) 50%,
+            rgba(255, 255, 255, 0));
+    position: absolute;
+    top: 80px;
+    left: calc(50vw - 435px);
+}
+
+.horizontalline {
+    height: 1px;
+    width: calc(50vw - 160px);
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0.5) 50%,
+            rgba(255, 255, 255, 0));
+    position: absolute;
+    bottom: 0;
+}
