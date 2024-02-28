@@ -18,6 +18,8 @@ func Server() {
 	http.HandleFunc("/logout", Logout)
 	http.HandleFunc("/getusers", GetUsers)
 	http.HandleFunc("/post", Post)
+	http.HandleFunc("/comment", Comment)
+
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
 	})

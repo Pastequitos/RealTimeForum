@@ -80,6 +80,7 @@ function appendPosts(post) {
     const leftContainer = document.querySelector('.leftside'); // Assuming .leftside is a class
 
     const postElement = document.createElement('div');
+    postElement.setAttribute('data-post-id', post.ID);
     postElement.classList.add('post');
 
     const postheaderElement = document.createElement('div');
@@ -126,9 +127,25 @@ function appendPosts(post) {
     postinteractionElement.appendChild(postlikeElement);
 
     const postcommentElement = document.createElement('span');
-    postcommentElement.classList.add('comment');
+    postcommentElement.classList.add('commenticon');
     postcommentElement.classList.add('invert');
     postinteractionElement.appendChild(postcommentElement);
+
+    const postComments = document.createElement('div');
+    postComments.classList.add('post-comments');
+    postComments.classList.add('closed');
+    postElement.appendChild(postComments);
+
+    const commentInput = document.createElement('textarea');
+    commentInput.classList.add('commentinput');
+    commentInput.setAttribute('id', `commentinput-${post.ID}`);
+    commentInput.setAttribute('placeholder', 'Write a comment...');
+    postComments.appendChild(commentInput);
+
+    const submitCommentButton = document.createElement('button');
+    submitCommentButton.classList.add('sendComment');
+    submitCommentButton.addEventListener('click', () => submitComment(post.ID));
+    postComments.appendChild(submitCommentButton);
 
     const dateElement = document.createElement('div');
     dateElement.classList.add('post-time');

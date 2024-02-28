@@ -155,7 +155,7 @@
             <span>4 hours ago</span>
           </div>
         </div>
-
+        
         
         <div class="post">
           <div class="post-header">
@@ -167,21 +167,23 @@
           </div>
           <div class="post-caption">
             <span>user_name Lorem ipsum dolor sit amet #hashtag #hashtag #hashtag user_name Lorem ipsum dolor sit amet
-              #hashtag #hashtag #hashtaguser_name Lorem ipsum dolor sit amet #hashtag #hashtag #hashtaguser_name Lorem
-              ipsum dolor sit amet #hashtag #hashtag #hashtaguser_name Lorem ipsum dolor sit amet #hashtag #hashtag
-              #hashtag</span>
+              #hashtag #hashtag #hashtag</span>
           </div>
           <div class="post-interactions">
             <span class="notliked invert"></span>
-            <span class="comment invert"></span>
+            <span class="commenticon invert"></span>
+          </div>
+          <div class="post-comments closed">
+            <textarea type="text" id="commentinput" class="commentinput" placeholder="Write a comment"></textarea>
+            <button id="sendComment" class="sendComment" type="button"></button>
           </div>
           <div class="post-time">
             <span>4 hours ago</span>
           </div>
         </div>
- -->
+      -->
       </div>
-
+      
     </div>
   </div>
 
@@ -200,7 +202,7 @@
       <option value="code">code</option>
       <option value="text">text</option>
     </select>
-    <textarea name="inputpost" id="inputpost" placeholder="What's on your mind ?"></textarea>
+    <textarea name="inputpost" id="inputpost" class="postinput" placeholder="What's on your mind ?"></textarea>
     <button class="submitpost" id="submitpost">post</button>
   </div>
 
@@ -324,6 +326,8 @@
   <script src="../static/js/logout.js"></script>
   <script src="../static/js/register.js"></script>
   <script src="../static/js/post.js"></script>
+  <script src="../static/js/comment.js"></script>
+
 
   <script src="../static/js/bg.js"></script>
   <script type="text/javascript" src="../static/js/vanilla-tilt.js"></script>
