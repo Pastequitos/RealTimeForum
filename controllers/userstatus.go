@@ -15,8 +15,6 @@ type User struct {
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	/* 	fmt.Println("Fetching users...") */
-	// Connect to the database
 	db, err := sql.Open("sqlite3", "database.db")
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to connect to database. "+err.Error(), http.StatusInternalServerError)
@@ -24,7 +22,13 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	// Query users from the database
+	// Retrieve the current user's username from the session
+	currentUsername, err := GetUsernameFromSession(w, r)
+	if err != nil {
+		http.Error(w, "Failed to retrieve session information. "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	rows, err := db.Query("SELECT id, username, connected FROM user_account_data")
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to query database. "+err.Error(), http.StatusInternalServerError)
@@ -35,29 +39,28 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	// Create a slice to store user data
 	var users []User
 
-	// Iterate through the rows and populate the users slice
 	for rows.Next() {
 		var user User
 		if err := rows.Scan(&user.ID, &user.Username, &user.Connected); err != nil {
 			http.Error(w, "500 internal server error: Failed to scan row. "+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		users = append(users, user)
+		// Exclude the current user from the list
+		if user.Username != currentUsername {
+			users = append(users, user)
+		}
 	}
 	if err := rows.Err(); err != nil {
 		http.Error(w, "500 internal server error: Failed to iterate over rows. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Marshal user data to JSON
 	userJSON, err := json.Marshal(users)
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to marshal user data. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	/* 	fmt.Println("userJSON: ", string(userJSON)) */
-	// Set the content type and write the JSON response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(userJSON)

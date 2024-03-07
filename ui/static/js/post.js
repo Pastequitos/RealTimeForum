@@ -2,14 +2,7 @@ document.getElementById('submitpost').addEventListener('click', function () {
     const title = document.getElementById('title').value;
     const content = document.getElementById('inputpost').value;
     const category = document.getElementById('posttype').value;
-
-    // Example usage: log the data to the console
-    console.log('Title:', title);
-    console.log('Content:', content);
-    console.log('Post Type:', category);
-
-
-
+    const nbcomment = 0
 
     fetch('http://localhost:3003/post', {
         method: 'POST',
@@ -22,13 +15,14 @@ document.getElementById('submitpost').addEventListener('click', function () {
             title: title,
             content: content,
             category: category,
-            date: ""
+            date: "",
+            nbcomment: nbcomment
         }),
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             displayPost();
+            sendMsg(conn, 0, { value: "New Post" }, 'post')
             // displayPost()
             // sendMsg() => objectif envoyer un msg avec serveWs via conn.onmessage avec "post" pour qu'il comprenne que c'est un post et notifie les autres d'une notif
         })
@@ -40,7 +34,6 @@ document.getElementById('submitpost').addEventListener('click', function () {
 
 
 function displayPost() {
-    console.log("here");
 
     const rightContainer = document.querySelector('.rightside');
     const leftContainer = document.querySelector('.leftside');
@@ -55,22 +48,23 @@ function displayPost() {
             'Content-Type': 'application/json',
         },
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
+        .then(response => response.json())
+        .then(data => {
 
-        const sortedData = data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+            const sortedData = data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
-        postCount = 0; 
+            postCount = 0;
 
-        sortedData.forEach(post => {
-            appendPosts(post);
+            sortedData.forEach(post => {
+                appendPosts(post);
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
 }
+
+
 
 let postCount = 0;
 
@@ -110,7 +104,7 @@ function appendPosts(post) {
     const postcaptionElement = document.createElement('div');
     postcaptionElement.classList.add('post-caption');
     postElement.appendChild(postcaptionElement);
-    
+
     const contentElement = document.createElement('p');
     contentElement.classList.add('post-content');
 
@@ -124,12 +118,35 @@ function appendPosts(post) {
     const postlikeElement = document.createElement('span');
     postlikeElement.classList.add('notliked');
     postlikeElement.classList.add('invert');
+    postlikeElement.addEventListener('click', () => toggleLike(post.ID, postlikeElement));
+
+    checkIfLiked(post.ID, (isLiked) => {
+        if (isLiked) {
+
+            postlikeElement.classList.add('liked');
+            postlikeElement.setAttribute('data-liked', 'true');
+        } else {
+            postlikeElement.setAttribute('data-liked', 'false');
+
+        }
+    });
     postinteractionElement.appendChild(postlikeElement);
 
     const postcommentElement = document.createElement('span');
     postcommentElement.classList.add('commenticon');
     postcommentElement.classList.add('invert');
+
+
+    const postnbcomment = document.createElement('p');
+    postnbcomment.classList.add('nbcomment');
+    postnbcomment.textContent = post.NbComment;
+    postcommentElement.appendChild(postnbcomment);
     postinteractionElement.appendChild(postcommentElement);
+
+    const commentscontainer = document.createElement('div')
+    commentscontainer.classList.add('commentscontainer')
+    commentscontainer.classList.add('closed')
+    postElement.appendChild(commentscontainer)
 
     const postComments = document.createElement('div');
     postComments.classList.add('post-comments');
@@ -151,12 +168,14 @@ function appendPosts(post) {
     dateElement.classList.add('post-time');
     dateElement.textContent = formatDate(post.Date);
     postElement.appendChild(dateElement);
-/* 
-    const categoryElement = document.createElement('p');
-    categoryElement.classList.add('postcategory');
-    categoryElement.textContent = post.Category;
-    postElement.appendChild(categoryElement);
-    */
+    /* 
+        const categoryElement = document.createElement('p');
+        categoryElement.classList.add('postcategory');
+        categoryElement.textContent = post.Category;
+        postElement.appendChild(categoryElement);
+
+        */
+
     if (postCount % 2 === 0) {
         leftContainer.appendChild(postElement);
     } else {
@@ -164,6 +183,25 @@ function appendPosts(post) {
     }
 
     postCount++;
+}
+
+function checkIfLiked(postId, callback) {
+    /*     console.log('checkIfLiked', postId) */
+    fetch(`http://localhost:3003/like?postId=${postId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            /*             console.log('checked', data); */
+            callback(data.liked); // `data.hasLiked` devrait être un booléen
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            callback(false); // Assumer non "liké" en cas d'erreur
+        });
 }
 
 function setBackgroundImageFromUnsplash(searchTerm, element) {
@@ -183,9 +221,6 @@ function setBackgroundImageFromUnsplash(searchTerm, element) {
         .catch(error => console.error('Error fetching image:', error));
 }
 
-
-
-
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     const now = new Date();
@@ -204,3 +239,80 @@ function formatDate(dateStr) {
     else if (diffDays < 2) return "il y a 1 jour";
     else return `il y a ${diffDays} jours`;
 }
+
+const createpostscreen = document.querySelector('.createpost');
+const postslider = document.querySelector('.slidetocreatepost');
+let isDragging = false;
+let startX, startRight;
+let hasMoved = false; // To track if significant movement has occurred
+
+const updateLimits = () => {
+    const computedStyle = window.getComputedStyle(createpostscreen);
+    startRight = parseInt(computedStyle.right, 10);
+};
+
+window.addEventListener('load', updateLimits);
+window.addEventListener('resize', updateLimits);
+
+const onMouseDown = (e) => {
+    isDragging = false; // Reset isDragging
+    hasMoved = false; // Reset hasMoved
+    startX = e.clientX;
+    updateLimits();
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp, { once: true });
+};
+
+const onMouseMove = (e) => {
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 5) { // Check if movement is significant (more than 5px)
+        isDragging = true;
+        hasMoved = true;
+        let newRight = Math.max(0, startRight - dx);
+        newRight = Math.min(newRight, window.innerWidth / 2 - 194);
+        createpostscreen.style.right = `${newRight}px`;
+        createpostscreen.style.transition = 'none';
+    }
+};
+
+const onMouseUp = () => {
+    document.removeEventListener('mousemove', onMouseMove);
+    if (createpostscreen.style.right === '0px' && !hasMoved) {
+        console.log('has moved1')
+        let newRight = Math.min(window.innerWidth / 2 - 194);
+        createpostscreen.style.transition = '0.5s ease-in-out';
+        createpostscreen.style.right = `${newRight}px`;
+        setTimeout(() => {
+            createpostscreen.style.transition = 'none';
+        }, 500);
+    }
+    if (createpostscreen.style.right === '0px' && hasMoved) {
+        console.log('has moved2')
+        createpostscreen.style.transition = '0.5s ease-in-out';
+        createpostscreen.style.right = '0px';
+        setTimeout(() => {
+            createpostscreen.style.transition = 'none';
+        }, 500);
+    }
+    if (createpostscreen.style.right < '200px' && hasMoved) {
+        createpostscreen.style.transition = '0.5s ease-in-out';
+        createpostscreen.style.right = '0px';
+        setTimeout(() => {
+            createpostscreen.style.transition = 'none';
+        }, 500);
+
+    }
+    if (createpostscreen.style.right >= '200px' && hasMoved) {
+        createpostscreen.style.transition = '0.5s ease-in-out';
+        let newRight = Math.min(window.innerWidth / 2 - 194);
+        createpostscreen.style.right = `${newRight}px`;
+        setTimeout(() => {
+            createpostscreen.style.transition = 'none';
+        }, 500);
+    }
+    isDragging = false;
+};
+
+postslider.addEventListener('mousedown', onMouseDown);
+createpostscreen.style.position = 'absolute';

@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -98,4 +99,36 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write(resp)
 	}
+}
+
+func GetUsernameFromSession(w http.ResponseWriter, r *http.Request) (string, error) {
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			return "", nil
+		}
+		return "", err
+	}
+	sessionToken := cookie.Value
+
+	// Connect to the database
+	db, err := sql.Open("sqlite3", "database.db")
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+
+	// Query for the username associated with the session token
+	var username string
+	err = db.QueryRow("SELECT username FROM user_account_data WHERE session_token = ?", sessionToken).Scan(&username)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil
+		}
+		return "", err
+	}
+
+	fmt.Println("Username: ", username)
+
+	return username, nil
 }

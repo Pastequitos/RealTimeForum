@@ -4,7 +4,17 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target.matches('.commenticon')) {
             const postContainer = event.target.closest('.post');
             const commentContainer = postContainer.querySelector('.post-comments');
+            const commentscontainer = postContainer.querySelector('.commentscontainer');
+            const postId = postContainer.getAttribute('data-post-id'); // Retrieve postId
+/*             console.log(postId) */
             commentContainer.classList.toggle('closed');
+            commentscontainer.classList.toggle('closed');
+            if (!commentContainer.classList.contains('closed')) {
+/*                 console.log('See comments for post ID:', postId); */
+                seeComments(postId);
+            }
+
+
         }
     });
 
@@ -30,15 +40,16 @@ function autoResize(textarea, commentContainer) {
 }
 
 
-/* sendcomment.addEventListener('click', function () {
+/* 
+sendcomment.addEventListener('click', function () {
     console.log('cliked')
 }) */
 
 function submitComment(postId) {
     const commentInput = document.getElementById(`commentinput-${postId}`);
     const commentContent = commentInput.value;
-    console.log('Post ID:', postId);
-    console.log('Comment content:', commentContent);
+/*     console.log('Post ID:', postId);
+    console.log('Comment content:', commentContent); */
     fetch(`http://localhost:3003/comment`, {
         method: 'POST',
         headers: {
@@ -51,10 +62,81 @@ function submitComment(postId) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log('Comment added:', data);
-            displayComment(data, postId);
+            const commenticon = document.querySelector('.commenticon');
+            const nbcomment = commenticon.querySelector('.nbcomment');
+            let nbComment = parseInt(nbcomment.textContent);
+            nbcomment.textContent =  nbComment + 1;
+/*             console.log('Comment added:', data); */
+            seeComments(postId);
+            commentInput.value = "";
         })
         .catch(error => {
             console.error('Error:', error);
         });
+};
+
+
+function seeComments(postId) {
+    const postContainer = document.querySelector(`.post[data-post-id="${postId}"]`);
+    const commentscontainer = postContainer.querySelector('.commentscontainer');
+
+    // Clear previous comments
+    commentscontainer.innerHTML = ''; // Uncomment and ensure this targets the right container
+
+    fetch(`http://localhost:3003/comment?postId=${postId}`)
+        .then(response => response.json())
+        .then(comments => {
+/*             console.log('comments', comments)
+            console.log('postid', postId) */
+            const commentsize = document.createElement('div');
+            commentsize.classList.add('commentsize');
+            if (comments && Array.isArray(comments)) {
+                comments.forEach(comment => {
+/*                     console.log('comments'); */
+
+                    
+                    const commentinfo = document.createElement('div');
+                    commentinfo.classList.add('commentinfo');
+                    commentsize.appendChild(commentinfo)
+                    
+                    const commentusername = document.createElement('p');
+                    commentusername.classList.add('commentusername');
+                    commentusername.textContent = comment.Username
+                    commentinfo.appendChild(commentusername)
+                    
+                    const commentdate = document.createElement('p');
+                    commentdate.classList.add('commentdate');
+                    commentdate.textContent = formatDateComm(comment.Date);
+                    commentinfo.appendChild(commentdate)
+                    
+                    const commenttext = document.createElement('p');
+                    commenttext.classList.add('comment');
+                    commenttext.textContent = comment.Content;
+                    commentsize.appendChild(commenttext)
+
+                    commentscontainer.appendChild(commentsize) 
+                });
+            }
+            document.querySelector('.commentscontainer').style.height = commentsize.scrollHeight + 'px';
+        })
+        .catch(error => console.error('Error fetching comments:', error));
+}
+
+function formatDateComm(dateStr) {
+    const date = new Date(dateStr);
+    const now = new Date();
+
+    const diffSeconds = Math.round((now - date) / 1000);
+    const diffMinutes = Math.round(diffSeconds / 60);
+    const diffHours = Math.round(diffMinutes / 60);
+    const diffDays = Math.round(diffHours / 24);
+
+    if (diffMinutes < 1) return "now";
+    else if (diffMinutes < 5) return "5 minutes ago";
+    else if (diffMinutes < 15) return "15 minutes ago";
+    else if (diffMinutes < 45) return "45 minutes ago";
+    else if (diffHours < 24) return `${diffHours} hours ago`;
+    else if (diffHours < 2) return "1 hour ago";
+    else if (diffDays < 2) return "1 day ago";
+    else return `${diffDays} days ago`;
 }

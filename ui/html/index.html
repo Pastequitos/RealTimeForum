@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="../static/css/topnotif.css">
   <link rel="stylesheet" href="../static/css/display.css">
   <link rel="stylesheet" href="../static/css/post.css">
+  <link rel="stylesheet" href="../static/css/chat.css">
+
 
 
 
@@ -92,6 +94,134 @@
 
 
   <div class="display">
+
+    <div class="chatdisplay">
+      
+      <div id="chatsContainer">
+       <!--  
+        <div class="chatblock" id="chatblock">
+          <div class="chatHeader">
+            <img class="chatIcon invert user" src="../static/media/user.png">
+            <span class="chatOnlineCircle"></span>
+            <p class="chatUsername">Invite</p>
+            <div class="chatControl">
+              <span class="chatbtn close-btn"></span>
+              <span class="chatbtn min-btn"></span>
+              <span class="chatbtn max-btn"></span>
+            </div>
+            <span class="chatsperation"></span>
+          </div>
+
+          <div class="chatdiv" id="chatdiv">
+
+            <div class="textchatdiv leftchat">
+              <p class="textchat">hello</p>
+              <p class="timechat">12:30</p>
+            </div>
+            <div class="textchatdiv leftchat">
+              <p class="textchat">how are you ?</p>
+              <p class="timechat">12:30</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">Fine and you ?</p>
+              <p class="timechat">12:31</p>
+            </div>
+
+            <div class="textchatdiv leftchat">
+              <p class="textchat">I am fine too</p>
+              <p class="timechat">12:32</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">I am also fine</p>
+              <p class="timechat">12:33</p>
+            </div>
+
+            <div class="textchatdiv leftchat">
+              <p class="textchat">hello</p>
+              <p class="timechat">12:30</p>
+            </div>
+            <div class="textchatdiv leftchat">
+              <p class="textchat">how are you ?</p>
+              <p class="timechat">12:30</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">Fine and you ?</p>
+              <p class="timechat">12:31</p>
+            </div>
+
+            <div class="textchatdiv leftchat">
+              <p class="textchat">I am fine too</p>
+              <p class="timechat">12:32</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">I am also fine</p>
+              <p class="timechat">12:33</p>
+            </div>
+            <div class="textchatdiv leftchat">
+              <p class="textchat">hello</p>
+              <p class="timechat">12:30</p>
+            </div>
+            <div class="textchatdiv leftchat">
+              <p class="textchat">how are you ?</p>
+              <p class="timechat">12:30</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">Fine and you ?</p>
+              <p class="timechat">12:31</p>
+            </div>
+
+            <div class="textchatdiv leftchat">
+              <p class="textchat">I am fine too</p>
+              <p class="timechat">12:32</p>
+            </div>
+
+            <div class="textchatdiv rightchat">
+              <p class="textchat">I am also fine</p>
+              <p class="timechat">12:33</p>
+            </div>
+
+          </div>
+          <div class="inputdiv">
+            <textarea type="text" id="chatinput" class="chatinput" placeholder="Write a comment"></textarea>
+            <button id="sendChat" class="sendChat" type="button"></button>
+          </div>
+
+        </div>
+
+
+
+        <div class="chatblock2 hiddenchat" id="chatblock2">
+          <div class="chatHeader">
+            <img class="chatIcon invert user" src="../static/media/user.png">
+            <span class="chatOnlineCircle"></span>
+            <p class="chatUsername">Invite</p>
+            <div class="chatControl">
+              <span class="chatbtn close-btn"></span>
+              <span class="chatbtn min-btn"></span>
+              <span class="chatbtn max-btn"></span>
+            </div>
+            <span class="chatsperation"></span>
+          </div>
+
+          <div class="chatdiv">
+
+          </div>
+          <div class="inputdiv">
+            <textarea type="text" id="chatinput" class="chatinput" placeholder="Write a comment"></textarea>
+            <button id="sendChat" class="sendChat" type="button"></button>
+          </div>
+        </div>
+      -->
+        
+      </div>
+
+    </div>
+
     <div class="bordertopleft"></div>
     <div class="topleft"></div>
     <svg class="svg" width="100" height="100" viewBox="0 0 48 48">
@@ -121,6 +251,9 @@
 
       </header>
     </div>
+
+
+
     <span class="verticalline"></span>
 
     <div id="postsContainer">
@@ -146,18 +279,18 @@
               #hashtag #hashtag #hashtaguser_name Lorem ipsum dolor sit amet #hashtag #hashtag #hashtaguser_name Lorem
               ipsum dolor sit amet #hashtag #hashtag #hashtaguser_name Lorem ipsum dolor sit amet #hashtag #hashtag
               #hashtag</span>
+            </div>
+            <div class="post-interactions">
+              <span class="notliked invert"></span>
+              <span class="comment invert"></span>
+            </div>
+            <div class="post-time">
+              <span>4 hours ago</span>
+            </div>
           </div>
-          <div class="post-interactions">
-            <span class="notliked invert"></span>
-            <span class="comment invert"></span>
-          </div>
-          <div class="post-time">
-            <span>4 hours ago</span>
-          </div>
-        </div>
-        
-        
-        <div class="post">
+          
+          
+          <div class="post">
           <div class="post-header">
             <span class="userpp invert"></span>
             <span class="postusername">user_name</span>
@@ -171,8 +304,32 @@
           </div>
           <div class="post-interactions">
             <span class="notliked invert"></span>
-            <span class="commenticon invert"></span>
+            <span class="commenticon invert">
+              <p class="nbcomment">12</p>
+            </span>
           </div>
+
+
+
+          <div class="commentscontainer closed">
+
+            <div class="commentsize">
+
+              <div class="commentinfo">
+                <div class="commentusername">Wbello</div>
+                <div class="commentdate">4 hours ago</div>
+              </div>
+              <div class="comment">
+                Loremipsumerdtfuijtrdfijohigyfrdguycrxtbivryguibvucytrdftbivibuyxderctfnibyvctrxderwsxdtcfyvgbhnjbvgycftxdrwsxdtcfyvgubinobvugryctvubinojbvutcyryxyctvubino
+              </div>
+              
+            </div>
+            
+          </div>
+          
+          
+          
+
           <div class="post-comments closed">
             <textarea type="text" id="commentinput" class="commentinput" placeholder="Write a comment"></textarea>
             <button id="sendComment" class="sendComment" type="button"></button>
@@ -183,7 +340,7 @@
         </div>
       -->
       </div>
-      
+
     </div>
   </div>
 
@@ -197,7 +354,7 @@
     <span class="slidermark"></span>
     <p class="slidetocreatepost">Slide to create a post</p>
     <input type="text" id="title" class="titleinput" placeholder="Titre du post">
-    <select name="posttype" id="posttype">
+    <select class="posttype" name="posttype" id="posttype">
       <option value="golang">golang</option>
       <option value="code">code</option>
       <option value="text">text</option>
@@ -327,6 +484,12 @@
   <script src="../static/js/register.js"></script>
   <script src="../static/js/post.js"></script>
   <script src="../static/js/comment.js"></script>
+  <script src="../static/js/like.js"></script>
+  <script src="../static/js/chat.js"></script>
+  <script src="../static/js/users.js"></script>
+
+
+
 
 
   <script src="../static/js/bg.js"></script>

@@ -11,12 +11,13 @@ import (
 )
 
 type PostData struct {
-	ID       int
-	Username string
-	Title    string
-	Content  string
-	Category string
-	Date     string
+	ID        int
+	Username  string
+	Title     string
+	Content   string
+	Category  string
+	Date      string
+	NbComment int
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
@@ -41,8 +42,9 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 		post.Date = time.Now().Format("2006-01-02 15:04:05")
 		post.Username, _ = CurrentUser(cookie.Value)
+		post.NbComment = 0
 
-		_, err = db.Exec("INSERT INTO post (username, title, content, category, date) VALUES (?, ?, ?, ?, ?)", post.Username, post.Title, post.Content, post.Category, post.Date)
+		_, err = db.Exec("INSERT INTO post (username, title, content, category, date, nbcomment) VALUES (?, ?, ?, ?, ?, ?)", post.Username, post.Title, post.Content, post.Category, post.Date, post.NbComment)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to insert post into database. "+err.Error(), http.StatusInternalServerError)
 			return
@@ -77,14 +79,14 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		var posts []PostData
 		for rowposts.Next() {
 			var p PostData
-			err := rowposts.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Category, &p.Date)
+			err := rowposts.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Category, &p.Date, &p.NbComment)
 			if err != nil {
 				break
 			}
 			posts = append(posts, p)
 		}
 
-		fmt.Println(posts)
+/* 		fmt.Println(posts) */
 
 		/* 		msg := Resp{Msg: "✅ Every post", Type: "success"} */
 		resp, err := json.Marshal(posts)

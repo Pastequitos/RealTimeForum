@@ -9,8 +9,8 @@ import (
 
 func Server() {
 	flag.Parse()
-	hub := newHub()
-	go hub.run()
+	hub := NewHub()
+	go hub.Run()
 
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/register", Register)
@@ -19,6 +19,7 @@ func Server() {
 	http.HandleFunc("/getusers", GetUsers)
 	http.HandleFunc("/post", Post)
 	http.HandleFunc("/comment", Comment)
+	http.HandleFunc("/like", Like)
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
