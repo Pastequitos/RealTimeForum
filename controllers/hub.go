@@ -102,7 +102,7 @@ func (h *Hub) Run() { // Run the hub
 				panic(err)
 			}
 
-			if msg.Msg_type == "msg" { // Check if the message is a chat message
+			if msg.Msg_type == "mp" { // Check if the message is a chat message
 				for _, client := range h.clients {
 					if client.userID == msg.Receiver_id {
 						select {

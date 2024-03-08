@@ -13,6 +13,7 @@ function login() {
     let onlinestatus = document.querySelector('.onlinestatus');
     let navfooter = document.querySelector('.navfooter');
     let capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
+    const nobody = document.querySelector('.nobody');
 
     fetch('http://localhost:3003/login', {
         method: 'POST',
@@ -36,7 +37,8 @@ function login() {
                 notif.style.animation = "shownotif 7s ease-in-out forwards";
                 progressbar.style.animation = "progress 7s ease-in-out forwards";
                 navfooter.style.width = "50px";
-                postslider.style.translate = "-30px -50%"
+                postslider.style.translate = "-30px -50%";
+                nobody.style.opacity = 0;
 
                 setTimeout(() => {
                     onlinestatus.style.display = "flex";

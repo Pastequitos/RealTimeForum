@@ -105,6 +105,13 @@ func (c *Client) readPump() {
 
 		msg.Sender_id = c.userID
 
+		if msg.Msg_type == "mp" {
+			fmt.Println("start mp")
+			SendMessage(msg)
+		}
+
+		// if msg_type = mp ==> NewMessage(INSERT)
+
 		sendMsg, err := json.Marshal(msg)
 		if err != nil {
 			log.Printf("Error marshaling message: %v", err)

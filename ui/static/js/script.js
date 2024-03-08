@@ -136,18 +136,13 @@ function capitalize(str) {
 
 
 function sendMsg(conn, rid, msg, msg_type) {
-
     console.log(conn, msg, msg_type)
-    // Check si WS ouverte.
     if (!conn) {
         return false;
     }
-
-    // Check message vide.
     if (!msg.value) {
         return false;
     }
-
     let msgData = {
         id: 0,
         sender_id: 0,
@@ -160,6 +155,8 @@ function sendMsg(conn, rid, msg, msg_type) {
     console.log(msgData)
 
     conn.send(JSON.stringify(msgData))
+
+    
     msg.value = "";
     return false;
 };

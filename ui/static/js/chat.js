@@ -5,9 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function addChat(userName) {
+/*     getMp(userName.id) */
     console.log('clicked', userName);
     const chatArea = document.getElementById("chatsContainer");
-    const chatBlockId = 'chatblock-' + userName.replace(/\s+/g, '-').toLowerCase();
+    console.log(userName.username)
+    console.log(userName.id)
+    const chatBlockId = 'chatblock-' + userName.username.replace(/\s+/g, '-').toLowerCase();
+    console.log(chatBlockId)
     if (document.getElementById(chatBlockId)) {
         console.log('This chat is already open.');
         return;
@@ -17,28 +21,28 @@ function addChat(userName) {
         console.log('You need to close a chat before opening a new one.');
         return;
     } else {
-
         const chatBlock = document.createElement('div');
         chatBlock.classList.add('chatblock');
         chatBlock.id = chatBlockId;
-
+        
+        
         const chatHeader = document.createElement('div');
         chatHeader.classList.add('chatHeader')
-
+        
         const chatIcon = document.createElement('img');
         chatIcon.setAttribute('src', '../static/media/user.png');
         chatIcon.classList.add('chatIcon', 'invert', 'user')
         chatHeader.appendChild(chatIcon)
-
+        
         const chatOnlineCircle = document.createElement('span');
         chatOnlineCircle.className = 'chatOnlineCircle';
         chatHeader.appendChild(chatOnlineCircle);
 
         const chatUsername = document.createElement('p');
         chatUsername.className = 'chatUsername';
-        chatUsername.textContent = userName;
+        chatUsername.textContent = userName.username.charAt(0).toUpperCase() + userName.username.slice(1);
         chatHeader.appendChild(chatUsername);
-
+        
         const chatControl = document.createElement('div');
         chatControl.className = 'chatControl';
 
@@ -49,20 +53,20 @@ function addChat(userName) {
         const minButton = document.createElement('span');
         minButton.className = 'chatbtn min-btn';
         chatControl.appendChild(minButton);
-
+        
         const maxButton = document.createElement('span');
         maxButton.className = 'chatbtn max-btn';
         chatControl.appendChild(maxButton);
-
+        
         // Append chatControl to chatHeader
         chatHeader.appendChild(chatControl);
-
+        
         const chatSeparation = document.createElement('span');
         chatSeparation.className = 'chatsperation';
         chatHeader.appendChild(chatSeparation);
 
         chatBlock.appendChild(chatHeader)
-
+        
         const chatdiv = document.createElement('div');
         chatdiv.className = 'chatdiv';
         chatBlock.appendChild(chatdiv);
@@ -70,7 +74,7 @@ function addChat(userName) {
         const inputDiv = document.createElement('div');
         inputDiv.className = 'inputdiv';
 
-
+        
         const textarea = document.createElement('textarea');
         textarea.setAttribute('type', 'text');
         textarea.id = 'chatinput';
@@ -81,9 +85,13 @@ function addChat(userName) {
         const button = document.createElement('button');
         button.id = 'sendChat';
         button.className = 'sendChat';
-        button.setAttribute('type', 'button');
-        button.addEventListener('click', function () {
-            sendChatMessage(textarea, chatdiv);
+/*         chatBlock.setAttribute('data-user_id', userName.id); */
+
+button.setAttribute('type', 'button');
+button.addEventListener('click', function () {
+            sendMp(textarea, userName.id)
+            displayChatMessage(textarea, chatdiv)
+
         });
         inputDiv.appendChild(button);
         chatBlock.appendChild(inputDiv);
@@ -110,7 +118,7 @@ document.addEventListener('click', function (e) {
     }
 });
 
-function sendChatMessage(textarea, chatdiv) {
+function displayChatMessage(textarea, chatdiv) {
     // Create the chat message container
     const messageDiv = document.createElement('div');
     messageDiv.className = 'textchatdiv rightchat'; // Use 'leftchat' for messages from others
@@ -133,3 +141,28 @@ function sendChatMessage(textarea, chatdiv) {
 
     textarea.value = '';
 }
+
+
+
+
+function sendMp(textarea, receiver_id) {
+    const chatinput = textarea.value;
+    sendMsg(conn, receiver_id, { value: chatinput}, 'mp')
+}
+
+/* function getMp(receiver_id) {
+    // Assuming receiver_id is already defined and valid
+    fetch(`http://localhost:3003/mp?receiver_id=${receiver_id}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+} */

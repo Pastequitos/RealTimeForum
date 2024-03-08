@@ -38,7 +38,6 @@ function displayPost() {
     const rightContainer = document.querySelector('.rightside');
     const leftContainer = document.querySelector('.leftside');
 
-    // Clear the contents of both containers before appending new posts
     rightContainer.innerHTML = '';
     leftContainer.innerHTML = '';
 

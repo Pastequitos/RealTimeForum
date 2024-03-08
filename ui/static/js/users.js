@@ -5,13 +5,15 @@ function updateUserStatus() {
         .then(users => {
             const userContainer = document.getElementById('userContainer');
             userContainer.innerHTML = '';
-
+            
             users.sort((a, b) => b.connected - a.connected);
             
             users.forEach(user => {
+                console.log(user.id)
                 const userElement = document.createElement('div');
                 userElement.className = 'userStatus';
-                userElement.addEventListener('click', () => addChat(user.username.charAt(0).toUpperCase() + user.username.slice(1)));
+                userElement.id = user.id;
+                userElement.addEventListener('click', () => addChat(user));
 
 
                 const userImg = document.createElement('img');
