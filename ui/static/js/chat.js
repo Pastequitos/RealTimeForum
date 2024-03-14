@@ -10,7 +10,7 @@ function addChat(userName) {
     console.log(userName.username)
     console.log(userName)
     console.log(userName.id)
-    const chatBlockId = 'chatblock-' + userName.username.replace(/\s+/g, '-').toLowerCase();
+    const chatBlockId = 'chatblock-' + userName.id;
     console.log(chatBlockId)
     if (document.getElementById(chatBlockId)) {
         console.log('This chat is already open.');

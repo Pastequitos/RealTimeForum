@@ -110,9 +110,11 @@ function startWS() {
                 console.log("New mp")
                 console.log('data', data)
                 console.log("coucou")
-                receiver_id = data.receiver_id
+                receiver_id = data.sender_id
                 console.log("receiver:",receiver_id)
-                chatblock_id = data.chatblock_id
+                chatblock_id = 'chatblock-' + data.sender_id
+                console.log("chatblock:",chatblock_id)
+
                 getMp(receiver_id, chatblock_id);
             }
         }
