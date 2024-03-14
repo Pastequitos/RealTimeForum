@@ -23,8 +23,6 @@ document.getElementById('submitpost').addEventListener('click', function () {
         .then(data => {
             displayPost();
             sendMsg(conn, 0, { value: "New Post" }, 'post')
-            // displayPost()
-            // sendMsg() => objectif envoyer un msg avec serveWs via conn.onmessage avec "post" pour qu'il comprenne que c'est un post et notifie les autres d'une notif
         })
         .catch((error) => {
             console.error('Error:', error);

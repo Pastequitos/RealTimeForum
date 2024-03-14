@@ -15,7 +15,6 @@ function updateUserStatus() {
                 userElement.id = user.id;
                 userElement.addEventListener('click', () => addChat(user));
 
-
                 const userImg = document.createElement('img');
                 userImg.setAttribute('src', '../static/media/user.png');
                 userImg.className = 'icon invert user';
@@ -57,3 +56,4 @@ function updateUserStatus() {
             console.error('Error fetching users:', error);
         });
 }
+

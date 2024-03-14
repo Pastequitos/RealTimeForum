@@ -20,8 +20,7 @@ func Server() {
 	http.HandleFunc("/post", Post)
 	http.HandleFunc("/comment", Comment)
 	http.HandleFunc("/like", Like)
-/* 	http.HandleFunc("/mp", SendMessage) */
-
+	http.HandleFunc("/getmp", GetMessages)
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)

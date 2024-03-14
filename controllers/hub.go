@@ -1,6 +1,9 @@
 package controllers
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Hub struct {
 	clients    map[int]*Client // Registered clients
@@ -24,13 +27,14 @@ type OnlineUsers struct {
 }
 
 type Message struct {
-	Id          int    `json:"id"`
-	Sender_id   int    `json:"sender_id"`
-	Receiver_id int    `json:"receiver_id"`
-	Content     string `json:"content"`
-	Date        string `json:"date"`
-	Msg_type    string `json:"msg_type"`
-	UserID      int    `json:"user_id"`
+	Id           int    `json:"id"`
+	Sender_id    int    `json:"sender_id"`
+	Receiver_id  int    `json:"receiver_id"`
+	Content      string `json:"content"`
+	Date         string `json:"date"`
+	Msg_type     string `json:"msg_type"`
+	UserID       int    `json:"user_id"`
+	chatblock_id string `json:"chatblock_id"`
 }
 
 func (h *Hub) Run() { // Run the hub
@@ -96,6 +100,8 @@ func (h *Hub) Run() { // Run the hub
 			if err := json.Unmarshal(message, &msg); err != nil {
 				panic(err)
 			}
+
+			fmt.Println("msgchatblock", msg.chatblock_id)
 
 			sendMsg, err := json.Marshal(msg)
 			if err != nil {

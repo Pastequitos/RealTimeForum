@@ -62,7 +62,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "GET" {
 
 		fmt.Println("chargement post")
-
 		db, err := sql.Open("sqlite3", "database.db")
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to connect to database. "+err.Error(), http.StatusInternalServerError)
@@ -86,9 +85,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 			posts = append(posts, p)
 		}
 
-/* 		fmt.Println(posts) */
-
-		/* 		msg := Resp{Msg: "✅ Every post", Type: "success"} */
 		resp, err := json.Marshal(posts)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to marshal response."+err.Error(), http.StatusInternalServerError)

@@ -120,6 +120,8 @@ func (c *Client) readPump() {
 
 		log.Printf(string(sendMsg))
 		c.hub.broadcast <- sendMsg
+
+		
 	}
 }
 
@@ -129,12 +131,9 @@ func (c *Client) writePump() {
 		ticker.Stop()
 		c.conn.Close()
 	}()
-	fmt.Println("1")
 	for {
 		select {
 		case message, ok := <-c.send:
-			fmt.Println("3")
-
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// The hub closed the channel.
@@ -167,6 +166,8 @@ func (c *Client) writePump() {
 		}
 	}
 }
+
+
 
 func CurrentID(val string) (int, error) {
 	// Open a connection to the database

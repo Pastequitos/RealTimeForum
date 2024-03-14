@@ -79,8 +79,6 @@ function login() {
         .catch(error => {
             console.error('Error:', error);
         });
-
-    /*     console.log("login"); */
 }
 
 
@@ -98,7 +96,7 @@ function startWS() {
             const data = JSON.parse(evt.data);
 
             console.log(data)
-            console.log(data.msg_type)
+  /*           console.log(data.msg_type) */
             const responseType = data.msg_type;
             if (responseType === "post") {
                 console.log("New Post")
@@ -108,7 +106,16 @@ function startWS() {
                 console.log("New connection")
                 updateUserStatus();
             }
-        };
+            if (responseType === "mp") {
+                console.log("New mp")
+                console.log('data', data)
+                console.log("coucou")
+                receiver_id = data.receiver_id
+                console.log("receiver:",receiver_id)
+                chatblock_id = data.chatblock_id
+                getMp(receiver_id, chatblock_id);
+            }
+        }
 
         conn.onclose = function (evt) {
             // Fermeture connexion websocket.
