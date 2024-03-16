@@ -4,6 +4,11 @@ function logout() {
     })
     .then(response => response.json())
     .then(data => {
+
+        if (conn) {
+            conn.close();
+            console.log("closed websocket");
+        }
         let onlinestatus = document.querySelector('.onlinestatus');
         let navfooter = document.querySelector('.navfooter');
 
@@ -30,7 +35,6 @@ function logout() {
                 pagetitle.style.translate = "0px 0px";
                 fgpassword.classList.remove('hide');
             }, 1100);
-
             
     })
     .catch(error => {

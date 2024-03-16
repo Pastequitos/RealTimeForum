@@ -88,9 +88,8 @@ function addChat(userName) {
         button.addEventListener('click', function () {
             console.log(chatBlockId, 'chatblockId')
             sendMp(textarea, userName.id, chatBlockId)
-           /*  displayChatMessage(textarea, chatdiv) */
-            getMp(userName.id, chatBlockId)
-
+            getMp(userName.id, chatBlockId, messageOffset = 10)
+            setScrollPosition(chatdiv);
         });
         inputDiv.appendChild(button);
         chatBlock.appendChild(inputDiv);
@@ -102,13 +101,15 @@ function addChat(userName) {
     }, 10);
 }
 
+function setScrollPosition(chatdiv) {
+    chatdiv.scrollTop = chatdiv.scrollHeight;
+}
 
 function closeChat(event) {
     const chatBlock = event.target.closest('.chatblock');
     chatBlock.style.animation = 'closechat 0.5s ease-in-out forwards';
     if (chatBlock) {
         setTimeout(() => {
-
             chatBlock.remove();
         }, 1000);
     }
@@ -121,35 +122,14 @@ document.addEventListener('click', function (e) {
     }
 });
 
-function displayChatMessage(textarea, chatdiv) {
-    // Create the chat message container
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'textchatdiv rightchat'; // Use 'leftchat' for messages from others
-
-    // Create and append the text message paragraph
-    const messageText = document.createElement('p');
-    messageText.className = 'textchat';
-    messageText.textContent = textarea.value; // Use the textarea's current value
-    messageDiv.appendChild(messageText);
-
-    // Create and append the timestamp paragraph
-    const messageTime = document.createElement('p');
-    messageTime.className = 'timechat';
-    // Set the current time as the message timestamp
-    const currentTime = new Date();
-    messageTime.textContent = currentTime.getHours() + ':' + currentTime.getMinutes().toString().padStart(2, '0');
-    messageDiv.appendChild(messageTime);
-
-    chatdiv.appendChild(messageDiv);
-
-    textarea.value = '';
-}
-
 function sendMp(textarea, receiver_id, chatBlockId) {
     const chatblock_id = chatBlockId
     const chatinput = textarea.value;
+    textarea.value = '';
     sendMsg(conn, receiver_id, { value: chatinput }, 'mp', chatblock_id)
 }
+let messageOffset = 10
+let bt = false;
 
 function getMp(receiver_id, chatBlockId) {
     console.log('enter getmp')
@@ -157,35 +137,75 @@ function getMp(receiver_id, chatBlockId) {
 
     const url = new URL('http://localhost:3003/getmp');
     url.searchParams.append('receiver_id', receiver_id);
+
+    console.log("messageOffset", messageOffset)
     fetch(url, {
         method: 'GET',
-        headers: {'Accept': 'application/json'}
+        headers: { 'Accept': 'application/json' }
     })
     .then(response => response.json())
     .then(data => {
-        // Assuming `data` is an array of message objects
         const chatdiv = document.getElementById(chatBlockId).querySelector('.chatdiv');
-        chatdiv.innerHTML = ""
-        data.forEach(msg => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'textchatdiv';
-            // Decide the message alignment based on the sender
-            messageDiv.classList.add(msg.sender_id === receiver_id ? 'leftchat' : 'rightchat'); 
+        const scrollPosition = chatdiv.scrollHeight - chatdiv.scrollTop;
+        chatdiv.innerHTML = "";
+        if (messageOffset >= data.length || data.length === 0) {
+            console.log('less than 10 messages.');
+            let rest = data.length % 10;
+            let nextTenMessages = data.reverse().slice(0,data.length).reverse();
 
-            const messageContent = document.createElement('p');
-            messageContent.className = 'textchat';
-            messageContent.textContent = msg.content;
-            messageDiv.appendChild(messageContent);
+            nextTenMessages.forEach(msg => {
+                const messageDiv = createMessageDiv(msg, receiver_id);
+                chatdiv.appendChild(messageDiv);
+            });
+            chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
 
-            const messageDate = document.createElement('p');
-            messageDate.className = 'timechat';
-            messageDate.textContent = msg.date; // Format the date as needed
-            messageDiv.appendChild(messageDate);
+            if (rest >= 0) {
+                console.log('No more messages to load.');
+                return
+            }
+        } 
 
-            chatdiv.appendChild(messageDiv);
+            let nextTenMessages = data.reverse().slice(0, messageOffset).reverse();
+
+            nextTenMessages.forEach(msg => {
+                const messageDiv = createMessageDiv(msg, receiver_id);
+                chatdiv.appendChild(messageDiv);
+            });
+            chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
+            if (!bt) {
+                chatdiv.scrollTop = chatdiv.scrollHeight;
+                bt = true;
+            }
+            chatdiv.addEventListener('scroll', function () {
+                if (chatdiv.scrollTop === 0) {
+                        console.log('enter loadmore')
+                        messageOffset = messageOffset + 10;
+                        getMp(receiver_id, chatBlockId)
+                        chatdiv.removeEventListener('scroll', arguments.callee);
+                }
+            });
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+}
+
+function createMessageDiv(msg, receiver_id) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'textchatdiv';
+    // Decide the message alignment based on the sender
+    messageDiv.classList.add(msg.sender_id === receiver_id ? 'leftchat' : 'rightchat');
+
+    const messageContent = document.createElement('p');
+    messageContent.className = 'textchat';
+    messageContent.textContent = msg.content;
+    messageDiv.appendChild(messageContent);
+
+    const messageDate = document.createElement('p');
+    messageDate.className = 'timechat';
+    messageDate.textContent = msg.date; // Format the date as needed
+    messageDiv.appendChild(messageDate);
+
+    return messageDiv;
 }

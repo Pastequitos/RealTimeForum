@@ -120,9 +120,9 @@ function startWS() {
         }
 
         conn.onclose = function (evt) {
-            // Fermeture connexion websocket.
             console.log("WebSocket connection is closed");
         };
+        
     } else {
         console.log("<b>Your browser does not support WebSockets.</b>");
     }

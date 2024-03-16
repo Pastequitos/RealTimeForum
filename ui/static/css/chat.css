@@ -278,3 +278,11 @@
     font-size: 10px;
 
 }
+
+.textchatdiv:last-of-type {
+    background-color: red;
+}
+
+.textchatdiv:first-of-type {
+    background-color: green;
+}
