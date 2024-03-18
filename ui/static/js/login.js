@@ -107,14 +107,11 @@ function startWS() {
                 updateUserStatus();
             }
             if (responseType === "mp") {
-                console.log("New mp")
                 console.log('data', data)
-                console.log("coucou")
                 receiver_id = data.sender_id
-                console.log("receiver:",receiver_id)
                 chatblock_id = 'chatblock-' + data.sender_id
-                console.log("chatblock:",chatblock_id)
-
+                
+                unreadedMessages(receiver_id, chatblock_id);
                 getMp(receiver_id, chatblock_id);
             }
         }

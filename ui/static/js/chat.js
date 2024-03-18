@@ -5,25 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function addChat(userName) {
-    console.log('clicked', userName);
     const chatArea = document.getElementById("chatsContainer");
-    console.log(userName.username)
-    console.log(userName)
-    console.log(userName.id)
     const chatBlockId = 'chatblock-' + userName.id;
-    console.log(chatBlockId)
     if (document.getElementById(chatBlockId)) {
-        console.log('This chat is already open.');
         return;
     }
     const existingChatBlocks = chatArea.getElementsByClassName('chatblock').length;
     if (existingChatBlocks >= 2) {
-        console.log('You need to close a chat before opening a new one.');
         return;
     } else {
+        if (document.getElementById("user" + userName.id).querySelector('.unreaded')) {
+            byenotif(userName.id)
+        }
         const chatBlock = document.createElement('div');
         chatBlock.classList.add('chatblock');
         chatBlock.id = chatBlockId;
+        
 
 
         const chatHeader = document.createElement('div');
@@ -86,7 +83,6 @@ function addChat(userName) {
         button.className = 'sendChat';
         button.setAttribute('type', 'button');
         button.addEventListener('click', function () {
-            console.log(chatBlockId, 'chatblockId')
             sendMp(textarea, userName.id, chatBlockId)
             getMp(userName.id, chatBlockId, messageOffset = 10)
             setScrollPosition(chatdiv);
@@ -128,63 +124,61 @@ function sendMp(textarea, receiver_id, chatBlockId) {
     textarea.value = '';
     sendMsg(conn, receiver_id, { value: chatinput }, 'mp', chatblock_id)
 }
+
 let messageOffset = 10
 let bt = false;
 
 function getMp(receiver_id, chatBlockId) {
-    console.log('enter getmp')
-    console.log('receiver_id', receiver_id, 'chatblock_id', chatBlockId)
-
+    console.log("chatblock_id", chatBlockId)
     const url = new URL('http://localhost:3003/getmp');
     url.searchParams.append('receiver_id', receiver_id);
 
-    console.log("messageOffset", messageOffset)
     fetch(url, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
     })
-    .then(response => response.json())
-    .then(data => {
-        const chatdiv = document.getElementById(chatBlockId).querySelector('.chatdiv');
-        const scrollPosition = chatdiv.scrollHeight - chatdiv.scrollTop;
-        chatdiv.innerHTML = "";
-        if (messageOffset >= data.length || data.length === 0) {
-            console.log('less than 10 messages.');
-            let rest = data.length % 10;
-            let nextTenMessages = data.reverse().slice(0,data.length).reverse();
+        .then(response => response.json())
+        .then(data => {
+if (document.getElementById("user" + receiver_id).querySelector('.unreaded')) {
+    byenotif(receiver_id)
+}
+if (document.getElementById(chatBlockId)) {
+    const chatdiv = document.getElementById(chatBlockId).querySelector('.chatdiv');
+    const scrollPosition = chatdiv.scrollHeight - chatdiv.scrollTop;
+    chatdiv.innerHTML = "";
+    if (messageOffset >= data.length || data.length === 0) {
+        let rest = data.length % 10;
+        let nextTenMessages = data.reverse().slice(0, data.length).reverse();
 
-            nextTenMessages.forEach(msg => {
-                const messageDiv = createMessageDiv(msg, receiver_id);
-                chatdiv.appendChild(messageDiv);
-            });
-            chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
-
-            if (rest >= 0) {
-                console.log('No more messages to load.');
-                return
-            }
-        } 
-
-            let nextTenMessages = data.reverse().slice(0, messageOffset).reverse();
-
-            nextTenMessages.forEach(msg => {
-                const messageDiv = createMessageDiv(msg, receiver_id);
-                chatdiv.appendChild(messageDiv);
-            });
-            chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
-            if (!bt) {
-                chatdiv.scrollTop = chatdiv.scrollHeight;
-                bt = true;
-            }
-            chatdiv.addEventListener('scroll', function () {
-                if (chatdiv.scrollTop === 0) {
-                        console.log('enter loadmore')
-                        messageOffset = messageOffset + 10;
-                        getMp(receiver_id, chatBlockId)
-                        chatdiv.removeEventListener('scroll', arguments.callee);
-                }
-            });
-
+        nextTenMessages.forEach(msg => {
+            const messageDiv = createMessageDiv(msg, receiver_id);
+            chatdiv.appendChild(messageDiv);
+        });
+        chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
+        if (rest >= 0) {
+            return
+        }
+    }
+    let nextTenMessages = data.reverse().slice(0, messageOffset).reverse();
+    nextTenMessages.forEach(msg => {
+        const messageDiv = createMessageDiv(msg, receiver_id);
+        chatdiv.appendChild(messageDiv);
+    });
+    chatdiv.scrollTop = chatdiv.scrollHeight - scrollPosition;
+    if (!bt) {
+        chatdiv.scrollTop = chatdiv.scrollHeight;
+        bt = true;
+    }
+    chatdiv.addEventListener('scroll', function () {
+        if (chatdiv.scrollTop === 0) {
+            messageOffset = messageOffset + 10;
+            getMp(receiver_id, chatBlockId)
+            chatdiv.removeEventListener('scroll', arguments.callee);
+        }
+    });
+} else { //pas de chat ouvert
+    return
+}
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -208,4 +202,26 @@ function createMessageDiv(msg, receiver_id) {
     messageDiv.appendChild(messageDate);
 
     return messageDiv;
+}
+
+function unreadedMessages(receiver_id, chatBlockId) {
+    if (document.getElementById(chatBlockId)) {
+        console.log('This chat is already open.');
+        return;
+    } else {
+        const user = document.getElementById("user" + receiver_id);
+        const unreaded = document.createElement('span');
+        unreaded.className = 'unreaded';
+        setTimeout(() => {``
+console.log("la")
+            unreaded.style.right = "0px"
+        }, 10);
+        user.appendChild(unreaded);
+    }
+}
+
+function byenotif(receiver_id) {
+    const user = document.getElementById("user" + receiver_id);
+    user.querySelector('.unreaded').style.right = "-20px";
+    return
 }
