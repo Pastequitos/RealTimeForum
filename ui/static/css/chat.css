@@ -237,9 +237,6 @@
     transition: all 0.2s ease-in-out;
 }
 
-
-
-
 .chatdiv::-webkit-scrollbar {
     opacity: 0;
     width: 0;
@@ -266,8 +263,6 @@
 .textchatdiv.rightchat {
     text-align: right;
     border-radius: 20px 20px 0px 20px;
-
-
 }
 
 .textchat {
@@ -279,13 +274,13 @@
 
 }
 
-.textchatdiv:last-of-type {
+/* .textchatdiv:last-of-type {
     background-color: red;
 }
 
 .textchatdiv:first-of-type {
     background-color: green;
-}
+} */
 
 .unreaded {
     background-color: white;
@@ -295,4 +290,12 @@
     top: 0px;
     right: -20px;
     transition: right 0.3s ease-in-out;
+}
+
+.online {
+    order: -1;
+}
+
+.offline {
+    order: 1;
 }

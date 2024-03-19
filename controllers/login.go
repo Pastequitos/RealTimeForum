@@ -27,6 +27,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var login LoginData
 
 	err = json.NewDecoder(r.Body).Decode(&login)
+	fmt.Println("login: ", login)
+	fmt.Println("err: ", err)
 	if err != nil {
 		http.Error(w, "400 bad request: Invalid request body", http.StatusBadRequest)
 		return
@@ -37,15 +39,17 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err = db.QueryRow("SELECT id, password FROM user_account_data WHERE username=?", login.Username).Scan(&userID, &storedPassword)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			fmt.Println("Username not found")
 			msg := Resp{Msg: "❌ Oups! Username not found", Type: "error"}
 			resp, err := json.Marshal(msg)
+			fmt.Println("Errorpassword:", err)
 			if err != nil {
 				http.Error(w, "500 internal server error: Failed to marshal response. "+err.Error(), http.StatusInternalServerError)
 				return
 			}
 
 			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusUnauthorized)
+			w.WriteHeader(http.StatusOK)
 			w.Write(resp)
 		} else {
 			http.Error(w, "500 internal server error: Failed to query database. "+err.Error(), http.StatusInternalServerError)
@@ -54,6 +58,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if login.Password != storedPassword {
+		fmt.Println("Invalid password")
 		msg := Resp{Msg: "❌ Oups! Invalid password", Type: "error"}
 		resp, err := json.Marshal(msg)
 		if err != nil {
@@ -62,7 +67,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusOK)
 		w.Write(resp)
 		return
 	} else {
@@ -131,4 +136,36 @@ func GetUsernameFromSession(w http.ResponseWriter, r *http.Request) (string, err
 	fmt.Println("Username: ", username)
 
 	return username, nil
+}
+
+func GetIdFromSession(w http.ResponseWriter, r *http.Request) (string, error) {
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			return "", nil
+		}
+		return "", err
+	}
+	sessionToken := cookie.Value
+
+	// Connect to the database
+	db, err := sql.Open("sqlite3", "database.db")
+	if err != nil {
+		return "", err
+	}
+	defer db.Close()
+
+	// Query for the username associated with the session token
+	var id string
+	err = db.QueryRow("SELECT id FROM user_account_data WHERE session_token = ?", sessionToken).Scan(&id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil
+		}
+		return "", err
+	}
+
+	fmt.Println("id: ", id)
+
+	return id, nil
 }

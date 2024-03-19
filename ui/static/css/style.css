@@ -166,6 +166,8 @@ header {
 }
 
 #userContainer {
+/*     display: flex;
+    flex-direction: column; */
     top: 270px;
     position: absolute;
     transition: all 1s ease-in-out;
@@ -196,9 +198,10 @@ header {
 }
 
 .userStatus {
+    display: flex;
     white-space: nowrap;
     text-align: left;
-    margin: 10px;
+    margin: 10px 10px 0px 10px;
     font-size: 1.7rem;
     font-weight: 600;
     height: 50px;
@@ -213,7 +216,7 @@ header {
     -webkit-backdrop-filter: blur(5.5px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     transition: all 1s ease-in-out;
-    animation: slideInFromLeft 0.5s ease-out forwards;
+/*     animation: slideInFromLeft 0.5s ease-out forwards; */
 }
 
 .userStatus.slideOut {

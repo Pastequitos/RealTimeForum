@@ -1,26 +1,20 @@
 function updateUserStatus() {
+    console.log('updateUserStatus');
     fetch('/getusers')
         .then(response => response.json())
         .then(users => {
             const userContainer = document.getElementById('userContainer');
             userContainer.innerHTML = '';
 
-            // Sort users based on connected status and alphabetically if no one is connected
-            users.sort((a, b) => {
-                if (a.connected === b.connected) {
-                    // If both users have the same connected status, sort alphabetically by username
-                    return a.username.localeCompare(b.username);
-                } else {
-                    // Otherwise, sort by connected status (online first)
-                    return b.connected - a.connected;
-                }
-            });
+            // Sort users based on connected status
+            users.sort((a, b) => b.connected - a.connected);
 
-            
+            // Add online/offline class and create elements for each user
             users.forEach(user => {
-                console.log(user.id)
                 const userElement = document.createElement('div');
                 userElement.className = 'userStatus';
+                userElement.classList.add(user.connected === 1 ? 'online' : 'offline'); // Add online/offline class
+
                 userElement.id = "user" + user.id;
                 userElement.addEventListener('click', () => addChat(user));
 
@@ -48,7 +42,7 @@ function updateUserStatus() {
                 onlineCircleSpan.style.backgroundColor = "red"; // Adjust for online/offline
 
                 if (user.connected === 1) {
-                    onlineCircleSpan.style.backgroundColor = "#3ad323"
+                    onlineCircleSpan.style.backgroundColor = "#3ad323";
                 }
 
                 onlineStatusDiv.appendChild(onlineP);
