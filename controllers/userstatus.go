@@ -26,11 +26,11 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	currentUsername, err := GetUsernameFromSession(w, r)
-	if err != nil {
-		http.Error(w, "Failed to retrieve session information. "+err.Error(), http.StatusInternalServerError)
-		return
-	}
+	/* 	currentUsername, err := GetUsernameFromSession(w, r)
+	   	if err != nil {
+	   		http.Error(w, "Failed to retrieve session information. "+err.Error(), http.StatusInternalServerError)
+	   		return
+	   	} */
 
 	userId, err := GetIdFromSession(w, r)
 	if err != nil {
@@ -39,8 +39,8 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("currentUsername: ", currentUsername)
-	fmt.Println("userId: ", userId)
+	/* 	fmt.Println("currentUsername: ", currentUsername)
+	   	fmt.Println("userId: ", userId) */
 
 	var users []User
 
@@ -90,8 +90,8 @@ ORDER BY
 			fmt.Println("Error scanning row:", err)
 			continue
 		}
-		fmt.Println("receiverID", u.ReceiverID)
-		fmt.Println("userID", u.ID)
+		/* 		fmt.Println("receiverID", u.ReceiverID)
+		   		fmt.Println("userID", u.ID) */
 
 		users = append(users, u)
 	}
@@ -102,7 +102,7 @@ ORDER BY
 		return
 	}
 
-	fmt.Println("Users:", users)
+	/* 	fmt.Println("Users:", users) */
 
 	// Marshal the user slice to JSON
 	userJSON, err := json.Marshal(users)

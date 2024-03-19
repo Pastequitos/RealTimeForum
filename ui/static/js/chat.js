@@ -124,7 +124,14 @@ function sendMp(textarea, receiver_id, chatBlockId) {
     const chatinput = textarea.value;
     textarea.value = '';
     sendMsg(conn, receiver_id, { value: chatinput }, 'mp', chatblock_id)
-    updateUserStatus()
+
+
+
+    updateUserStatus(chatBlockId, receiver_id);
+
+/*     setTimeout(() => {
+        unreadedMessages(receiver_id, chatBlockId)
+    }, 500); */
 }
 
 let messageOffset = 10
@@ -214,16 +221,32 @@ function unreadedMessages(receiver_id, chatBlockId) {
         const user = document.getElementById("user" + receiver_id);
         const unreaded = document.createElement('span');
         unreaded.className = 'unreaded';
-        setTimeout(() => {
-            console.log("la")
-            unreaded.style.right = "0px"
-        }, 10);
+        unreaded.style.right = "-50px"
         user.appendChild(unreaded);
+        setTimeout(() => {
+            unreaded.style.right = "-10px"
+        }, 100);
     }
 }
 
 function byenotif(receiver_id) {
     const user = document.getElementById("user" + receiver_id);
-    user.querySelector('.unreaded').style.right = "-20px";
+    user.querySelector('.unreaded').style.right = "-50px";
+    setTimeout(() => {
+        user.querySelector('.unreaded').remove();
+    }, 1000);
     return
 }
+/* 
+let unreadedCounts = {
+    id: 0,
+    mpnum: 0
+};
+
+function unreaded(receiver_id) {
+    console.log('unreaded', receiver_id);
+    unreadedCounts.id = receiver_id;
+    unreadedCounts.mpnum = (unreadedCounts.mpnum || 0) + 1;
+    
+    console.log(`User ${receiver_id} has been called ${unreadedCounts.mpnum} times.`);
+} */

@@ -21,6 +21,8 @@ func Server() {
 	http.HandleFunc("/comment", Comment)
 	http.HandleFunc("/like", Like)
 	http.HandleFunc("/getmp", GetMessages)
+	http.HandleFunc("/updateUnreadMessages", updateUnreadMessages)
+	http.HandleFunc("/getUnreadMessages", GetUnreadMessages)
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)

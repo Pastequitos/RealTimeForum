@@ -165,7 +165,7 @@ func GetIdFromSession(w http.ResponseWriter, r *http.Request) (string, error) {
 		return "", err
 	}
 
-	fmt.Println("id: ", id)
+	/* 	fmt.Println("id: ", id) */
 
 	return id, nil
 }
