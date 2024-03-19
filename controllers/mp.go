@@ -96,7 +96,6 @@ type UnreadMessageResponse struct {
 
 func updateUnreadMessages(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Update unread messages")
-
 	var umr UnreadMessageRequest
 	// Decode the JSON request body into the UnreadMessageRequest struct
 	err := json.NewDecoder(r.Body).Decode(&umr)
@@ -104,20 +103,17 @@ func updateUnreadMessages(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "400 bad request: Failed to decode request body. "+err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	db, err := sql.Open("sqlite3", "database.db")
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to connect to database. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer db.Close()
-
 	userID, err := GetIdFromSession(w, r)
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to get user ID from session. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	// Fetch the current unread messages from the database
 	var currentUnreadMessages string
 	err = db.QueryRow("SELECT unreadmessages FROM user_account_data WHERE id = ?", userID).Scan(&currentUnreadMessages)
@@ -125,7 +121,6 @@ func updateUnreadMessages(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "500 internal server error: Failed to fetch current unread messages from database. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	// Parse the current unread messages and update the count if the same receiver ID is found
 	updatedUnreadMessages := currentUnreadMessages
 	if strings.Contains(currentUnreadMessages, fmt.Sprintf("%d:", umr.Rid)) {
@@ -135,24 +130,22 @@ func updateUnreadMessages(w http.ResponseWriter, r *http.Request) {
 			parts := strings.Split(s, ":")
 			count, _ := strconv.Atoi(parts[1])
 			count += 1
+			fmt.Printf("%d:%d", umr.Rid, count)
 			return fmt.Sprintf("%d:%d", umr.Rid, count)
 		})
 	} else {
 		// Append the new data to the current unread messages
 		updatedUnreadMessages = fmt.Sprintf("%s,%d:%d", currentUnreadMessages, umr.Rid, umr.UnreadCount)
 	}
-
 	// Update the database with the combined value
 	_, err = db.Exec("UPDATE user_account_data SET unreadmessages = ? WHERE id = ?", updatedUnreadMessages, userID)
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to update unreadmessages in the database. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	// Split the updated unread messages into separate receiver IDs and unread counts
 	unreadedUsers := []int{}
 	unreadedNumberOfMessages := []int{}
-
 	parts := strings.Split(updatedUnreadMessages, ",")
 	for _, part := range parts {
 		kv := strings.Split(part, ":")
@@ -163,20 +156,17 @@ func updateUnreadMessages(w http.ResponseWriter, r *http.Request) {
 			unreadedNumberOfMessages = append(unreadedNumberOfMessages, count)
 		}
 	}
-
 	// Prepare the response
 	response := UnreadMessageResponse{
 		UnreadedUser:            unreadedUsers,
 		UnreadedNumberOfMessage: unreadedNumberOfMessages,
 	}
-
 	// Marshal the response to JSON
 	umJSON, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, "500 internal server error: Failed to marshal response. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	// Set response headers and write the response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -235,7 +225,6 @@ func GetUnreadMessages(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "500 internal server error: Failed to marshal response. "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(umJSON)

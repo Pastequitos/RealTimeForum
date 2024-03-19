@@ -55,13 +55,12 @@ function updateUserStatus() {
 
                         userContainer.appendChild(userElement);
 
-                        // Check if the user has unread messages and update UI accordingly
+
                         const unreadIndex = data.unreadeduser.indexOf(user.id);
                         if (unreadIndex !== -1) {
                             const unreadCountSpan = document.createElement('span');
                             unreadCountSpan.textContent = data.unreadednumbeofmessage[unreadIndex];
                             unreadCountSpan.className = 'unread-count';
-
                             const unreaded = document.createElement('span');
                             unreaded.className = 'unreaded';
                             unreaded.style.right = "-40px"
@@ -83,7 +82,7 @@ function updateUserStatus() {
 }
 
 
-/* 
+
 function unreaded(receiver_id) {
     console.log('unreaded', receiver_id);
 
@@ -92,23 +91,23 @@ function unreaded(receiver_id) {
     updateDatabase(receiver_id, unreadedCounts[receiver_id]);
 
     console.log(`User ${receiver_id} has ${unreadedCounts[receiver_id]} unread messages.`);
-} */
+}
 
 
 
-/* function removeUnread(user) {
-        const user = document.getElementById("user" + receiver_id);
+function removeUnread(user) {
+    /*     const user = document.getElementById("user" + receiver_id);
         user.querySelector('.unreaded').style.right = "-40px";
         setTimeout(() => {
             user.querySelector('.unreaded').remove();
-        }, 1000);
+        }, 1000); */
 
     unreadedCounts[user.id] = 0;
     const unreadCountSpan = document.querySelector(`#user${user.id} .unread-count`);
     if (unreadCountSpan) {
         unreadCountSpan.remove();
     }
-} */
+}
 
 function updateDatabase(receiver_id, unreadCount) {
     console.log('updateDatabase', receiver_id, unreadCount);

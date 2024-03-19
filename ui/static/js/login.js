@@ -107,7 +107,7 @@ function startWS() {
                 updateUserStatus(receiver_id, chatblock_id);
                 getMp(receiver_id, chatblock_id);
                 unreaded(receiver_id);
-                console.log(unreadedCounts)
+/*                 console.log(unreadedCounts) */
             }
         }
 

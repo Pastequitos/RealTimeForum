@@ -14,10 +14,10 @@ function addChat(userName) {
     if (existingChatBlocks >= 2) {
         return;
     } else {
-
+/* 
         if (document.getElementById("user" + userName.id).querySelector('.unreaded')) {
             byenotif(userName.id)
-        }
+        } */
         const chatBlock = document.createElement('div');
         chatBlock.classList.add('chatblock');
         chatBlock.id = chatBlockId;
@@ -148,9 +148,9 @@ function getMp(receiver_id, chatBlockId) {
     })
         .then(response => response.json())
         .then(data => {
-            if (document.getElementById("user" + receiver_id).querySelector('.unreaded')) {
+/*             if (document.getElementById("user" + receiver_id).querySelector('.unreaded')) {
                 byenotif(receiver_id)
-            }
+            } */
             if (document.getElementById(chatBlockId)) {
                 const chatdiv = document.getElementById(chatBlockId).querySelector('.chatdiv');
                 const scrollPosition = chatdiv.scrollHeight - chatdiv.scrollTop;
@@ -229,14 +229,14 @@ function unreadedMessages(receiver_id, chatBlockId) {
     }
 }
 
-function byenotif(receiver_id) {
+/* function byenotif(receiver_id) {
     const user = document.getElementById("user" + receiver_id);
     user.querySelector('.unreaded').style.right = "-50px";
     setTimeout(() => {
         user.querySelector('.unreaded').remove();
     }, 1000);
     return
-}
+} */
 /* 
 let unreadedCounts = {
     id: 0,
