@@ -50,11 +50,11 @@
       <img class="icon invert settings" src="../static/media/settings.png">
     </div>
     <div class="settingdiv">
-      <button class="menuregister navbtn" type="submit" id="RegisterMenu"><img class="icon invert"
+      <button class="menuregister navbtn" type="submit" id="RegisterMenu"><img class="icon invert menuicon"
           src="../static/media/enter.png">Register</button>
-      <button class="menulogin navbtn" type="submit" id="LoginMenu"><img class="icon invert"
+      <button class="menulogin navbtn" type="submit" id="LoginMenu"><img class="icon invert menuicon"
           src="../static/media/login.png">Login</button>
-      <button class="menulogout navbtn" type="submit" id="LogoutMenu" onclick="logout()"><img class="icon invert"
+      <button class="menulogout navbtn" type="submit" id="LogoutMenu" onclick="logout()"><img class="icon invert menuicon"
           src="../static/media/close.png">Logout</button>
       <span class="line"></span>
     </div>
@@ -80,6 +80,11 @@
           <span class="onlinecircle"></span>
         </div>
       </div>
+      <section>
+        <input type="file" id="profilePicture">
+        <button id="sendProfilePicture">Upload</button>
+    
+      </section>
     </div>
   </nav>
 
@@ -282,6 +287,7 @@
   <script src="../static/js/like.js"></script>
   <script src="../static/js/chat.js"></script>
   <script src="../static/js/users.js"></script>
+  <script src="../static/js/sendpp.js"></script>
 
 
 

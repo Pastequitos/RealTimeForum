@@ -30,9 +30,16 @@ function updateUserStatus() {
                         userElement.addEventListener('click', () => addChat(user));
                         userElement.addEventListener('click', () => removeUnread(user));
 
+                        console.log(user.pp)
                         const userImg = document.createElement('img');
-                        userImg.setAttribute('src', '../static/media/user.png');
-                        userImg.className = 'icon invert user';
+                        if (user.pp) {
+                            userImg.className = 'user';
+                            userImg.src = `/getpp?id=${user.id}`;
+                        } else {
+                            userImg.setAttribute('src', '../static/media/user.png');
+                            userImg.style.border = "none";
+                            userImg.className = 'icon invert user';
+                        }
                         userElement.appendChild(userImg);
 
                         const statusDiv = document.createElement('div');
@@ -85,8 +92,6 @@ function updateUserStatus() {
                                 }, 100);
                             }
                         }
-
-                        
                     });
                 })
                 .catch(error => {

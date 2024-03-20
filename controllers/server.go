@@ -23,6 +23,8 @@ func Server() {
 	http.HandleFunc("/getmp", GetMessages)
 	http.HandleFunc("/updateUnreadMessages", updateUnreadMessages)
 	http.HandleFunc("/getUnreadMessages", GetUnreadMessages)
+	http.HandleFunc("/uploadpp", AddPp)
+	http.HandleFunc("/getpp", GetPp)
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)

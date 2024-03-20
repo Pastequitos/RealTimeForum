@@ -18,7 +18,8 @@ type UserData struct {
 	Age       int
 	Gender    string
 	Color     string
-	connected int
+	Connected int
+	Pp        []byte
 }
 
 type Resp struct {
@@ -61,8 +62,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		// Insert user data into the database
-		_, err = db.Exec("INSERT INTO user_account_data (username, email, password, fname, lname, age, gender, connected) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-			user.Username, user.Email, user.Password, user.Firstname, user.Lastname, user.Age, user.Gender, user.connected)
+		_, err = db.Exec("INSERT INTO user_account_data (username, email, password, fname, lname, age, gender, connected, pp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			user.Username, user.Email, user.Password, user.Firstname, user.Lastname, user.Age, user.Gender, user.Connected, user.Pp)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to insert user data into database. "+err.Error(), http.StatusInternalServerError)
 			return
@@ -80,6 +81,4 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write(resp)
 	}
-
-	// json.Marshal()
 }
