@@ -11,8 +11,6 @@ import (
 )
 
 func SendMessage(msg Message) {
-	/* 	fmt.Println("Sending message")
-	   	fmt.Println("Sending message", msg) */
 
 	var mp Message
 

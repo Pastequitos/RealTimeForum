@@ -88,6 +88,14 @@ function addChat(userName) {
             getMp(userName.id, chatBlockId, messageOffset = 10)
             setScrollPosition(chatdiv);
         });
+        textarea.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Prevent default behavior (new line)
+                sendMp(textarea, userName.id, chatBlockId);
+                getMp(userName.id, chatBlockId, messageOffset = 10);
+                setScrollPosition(chatdiv);
+            }
+        });
         inputDiv.appendChild(button);
         chatBlock.appendChild(inputDiv);
         chatArea.appendChild(chatBlock);
@@ -124,14 +132,7 @@ function sendMp(textarea, receiver_id, chatBlockId) {
     const chatinput = textarea.value;
     textarea.value = '';
     sendMsg(conn, receiver_id, { value: chatinput }, 'mp', chatblock_id)
-
-
-
     updateUserStatus(chatBlockId, receiver_id);
-
-/*     setTimeout(() => {
-        unreadedMessages(receiver_id, chatBlockId)
-    }, 500); */
 }
 
 let messageOffset = 10
@@ -229,24 +230,6 @@ function unreadedMessages(receiver_id, chatBlockId) {
     }
 }
 
-/* function byenotif(receiver_id) {
-    const user = document.getElementById("user" + receiver_id);
-    user.querySelector('.unreaded').style.right = "-50px";
-    setTimeout(() => {
-        user.querySelector('.unreaded').remove();
-    }, 1000);
-    return
-} */
-/* 
-let unreadedCounts = {
-    id: 0,
-    mpnum: 0
-};
 
-function unreaded(receiver_id) {
-    console.log('unreaded', receiver_id);
-    unreadedCounts.id = receiver_id;
-    unreadedCounts.mpnum = (unreadedCounts.mpnum || 0) + 1;
-    
-    console.log(`User ${receiver_id} has been called ${unreadedCounts.mpnum} times.`);
-} */
+
+

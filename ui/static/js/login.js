@@ -1,3 +1,9 @@
+document.getElementById('loginPassword').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        login();
+    }
+});
+
 let loggedInUsername = null;
 function login() {
     facestatus = "login";

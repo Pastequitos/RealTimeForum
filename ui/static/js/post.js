@@ -154,6 +154,11 @@ function appendPosts(post) {
     commentInput.classList.add('commentinput');
     commentInput.setAttribute('id', `commentinput-${post.ID}`);
     commentInput.setAttribute('placeholder', 'Write a comment...');
+    commentInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            submitComment(post.ID)
+        }
+    });
     postComments.appendChild(commentInput);
 
     const submitCommentButton = document.createElement('button');

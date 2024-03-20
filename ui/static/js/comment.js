@@ -6,11 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const commentContainer = postContainer.querySelector('.post-comments');
             const commentscontainer = postContainer.querySelector('.commentscontainer');
             const postId = postContainer.getAttribute('data-post-id'); // Retrieve postId
-/*             console.log(postId) */
             commentContainer.classList.toggle('closed');
             commentscontainer.classList.toggle('closed');
             if (!commentContainer.classList.contains('closed')) {
-/*                 console.log('See comments for post ID:', postId); */
                 seeComments(postId);
             }
 
@@ -39,12 +37,6 @@ function autoResize(textarea, commentContainer) {
     }
 }
 
-
-/* 
-sendcomment.addEventListener('click', function () {
-    console.log('cliked')
-}) */
-
 function submitComment(postId) {
     const commentInput = document.getElementById(`commentinput-${postId}`);
     const commentContent = commentInput.value;
@@ -66,7 +58,6 @@ function submitComment(postId) {
             const nbcomment = commenticon.querySelector('.nbcomment');
             let nbComment = parseInt(nbcomment.textContent);
             nbcomment.textContent =  nbComment + 1;
-/*             console.log('Comment added:', data); */
             seeComments(postId);
             commentInput.value = "";
         })
@@ -79,29 +70,22 @@ function submitComment(postId) {
 function seeComments(postId) {
     const postContainer = document.querySelector(`.post[data-post-id="${postId}"]`);
     const commentscontainer = postContainer.querySelector('.commentscontainer');
-
-    // Clear previous comments
-    commentscontainer.innerHTML = ''; // Uncomment and ensure this targets the right container
+    commentscontainer.innerHTML = '';
 
     fetch(`http://localhost:3003/comment?postId=${postId}`)
         .then(response => response.json())
         .then(comments => {
-/*             console.log('comments', comments)
-            console.log('postid', postId) */
             const commentsize = document.createElement('div');
             commentsize.classList.add('commentsize');
             if (comments && Array.isArray(comments)) {
                 comments.forEach(comment => {
-/*                     console.log('comments'); */
-
-                    
                     const commentinfo = document.createElement('div');
                     commentinfo.classList.add('commentinfo');
                     commentsize.appendChild(commentinfo)
                     
                     const commentusername = document.createElement('p');
                     commentusername.classList.add('commentusername');
-                    commentusername.textContent = comment.Username
+                    commentusername.textContent = commentusername.textContent = comment.Username.charAt(0).toUpperCase() + comment.Username.slice(1);
                     commentinfo.appendChild(commentusername)
                     
                     const commentdate = document.createElement('p');

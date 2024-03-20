@@ -284,10 +284,10 @@
 
 .unreaded {
     background-color: white;
-    height: 52px;
+    height: 30px;
     width: 40px;
     position: absolute;
-    top: 0px;
+    top: 11px;
     right: 0px;
     transition: right 0.3s cubic-bezier(.47, 1.64, .41, .8);
     border-radius: 20px;

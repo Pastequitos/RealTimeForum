@@ -69,20 +69,24 @@ function updateUserStatus() {
                             return;
                         }
 
-                        const unreadIndex = data.unreadeduser.indexOf(user.id);
-                        if (unreadIndex !== -1) {
-                            const unreadCountSpan = document.createElement('span');
-                            unreadCountSpan.textContent = data.unreadednumbeofmessage[unreadIndex];
-                            unreadCountSpan.className = 'unread-count';
-                            const unreaded = document.createElement('span');
-                            unreaded.className = 'unreaded';
-                            unreaded.style.right = "-40px"
-                            unreaded.appendChild(unreadCountSpan);
-                            userElement.appendChild(unreaded);
-                            setTimeout(() => {
-                                unreaded.style.right = "-10px"
-                            }, 100);
+                        if (!document.getElementById("chatblock-" + user.id)) {
+                            const unreadIndex = data.unreadeduser.indexOf(user.id);
+                            if (unreadIndex !== -1) {
+                                const unreadCountSpan = document.createElement('span');
+                                unreadCountSpan.textContent = data.unreadednumbeofmessage[unreadIndex];
+                                unreadCountSpan.className = 'unread-count';
+                                const unreaded = document.createElement('span');
+                                unreaded.className = 'unreaded';
+                                unreaded.style.right = "-40px"
+                                unreaded.appendChild(unreadCountSpan);
+                                userElement.appendChild(unreaded);
+                                setTimeout(() => {
+                                    unreaded.style.right = "-10px"
+                                }, 100);
+                            }
                         }
+
+                        
                     });
                 })
                 .catch(error => {
@@ -111,11 +115,15 @@ function unreaded(receiver_id) {
 
 
 function removeUnread(user) {
-    /*     const user = document.getElementById("user" + receiver_id);
-        user.querySelector('.unreaded').style.right = "-40px";
+    console.log(user)
+        const divuser = document.getElementById("user" + user.id);
+        if (!divuser.querySelector('.unreaded')) {
+            return;
+        }
+        divuser.querySelector('.unreaded').style.right = "-50px";
         setTimeout(() => {
-            user.querySelector('.unreaded').remove();
-        }, 1000); */
+            divuser.querySelector('.unreaded').remove();
+        }, 1000);
 
     unreadedCounts[user.id] = 0;
     const unreadCountSpan = document.querySelector(`#user${user.id} .unread-count`);
@@ -142,22 +150,12 @@ function updateDatabase(receiver_id, unreadCount) {
         },
         body: JSON.stringify(data) // Convert data to JSON string
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update database');
-            }
-            console.log('Database updated successfully');
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data:', data);
-        })
         .catch(error => {
             console.error('Error updating database:', error);
         });
 }
 
-function GetUnreadMessageDatabase() {
+async function GetUnreadMessageDatabase() {
     return fetch('/getUnreadMessages', {
         method: 'GET',
         headers: {
