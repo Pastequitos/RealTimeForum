@@ -104,10 +104,9 @@ function startWS() {
             if (responseType === "mp") {
                 receiver_id = data.sender_id
                 chatblock_id = 'chatblock-' + data.sender_id
-                updateUserStatus(receiver_id, chatblock_id);
                 getMp(receiver_id, chatblock_id);
                 unreaded(receiver_id);
-/*                 console.log(unreadedCounts) */
+                updateUserStatus(receiver_id, chatblock_id);
             }
         }
 

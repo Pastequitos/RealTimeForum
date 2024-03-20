@@ -138,7 +138,7 @@ let messageOffset = 10
 let bt = false;
 
 function getMp(receiver_id, chatBlockId) {
-    console.log("chatblock_id", chatBlockId)
+/*     console.log("chatblock_id", chatBlockId) */
     const url = new URL('http://localhost:3003/getmp');
     url.searchParams.append('receiver_id', receiver_id);
 

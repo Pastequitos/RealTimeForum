@@ -1,9 +1,16 @@
-let unreadedCounts = {}; // Initialize an empty object to store unread message counts
+let unreadedCounts = {};
 
 function updateUserStatus() {
-    GetUnreadMessageDatabase()
+    setTimeout(() => {
+        GetUnreadMessageDatabase()
         .then(data => {
             console.log("Data from GetUnreadMessageDatabase:", data);
+
+            // Check if data is null or undefined
+            if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
+                data = { unreadednumbeofmessage: [], unreadeduser: [] };
+            }
+
             fetch('/getusers')
                 .then(response => response.json())
                 .then(users => {
@@ -55,6 +62,12 @@ function updateUserStatus() {
 
                         userContainer.appendChild(userElement);
 
+                        console.log(data.unreadednumbeofmessage, data.unreadeduser, user.id);
+
+                        // Check if data is null or undefined
+                        if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
+                            return;
+                        }
 
                         const unreadIndex = data.unreadeduser.indexOf(user.id);
                         if (unreadIndex !== -1) {
@@ -79,7 +92,9 @@ function updateUserStatus() {
         .catch(error => {
             console.error('Error fetching unread message database:', error);
         });
+    }, 10);
 }
+
 
 
 
@@ -107,6 +122,8 @@ function removeUnread(user) {
     if (unreadCountSpan) {
         unreadCountSpan.remove();
     }
+    console.log('removed', user.id, unreadedCounts[user.id]);
+    updateDatabase(user.id, unreadedCounts[user.id]);
 }
 
 function updateDatabase(receiver_id, unreadCount) {
@@ -147,14 +164,14 @@ function GetUnreadMessageDatabase() {
             'Content-Type': 'application/json' // Set the content type to JSON
         },
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to fetch unread messages');
-        }
-        return response.json();
-    })
-    .catch(error => {
-        console.error('Error fetching unread messages:', error);
-        throw error; // Propagate the error
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch unread messages');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error fetching unread messages:', error);
+            throw error; // Propagate the error
+        });
 }
