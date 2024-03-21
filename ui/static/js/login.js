@@ -37,6 +37,7 @@ function login() {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             const responseType = data.type;
             if (responseType === "success") {
                 loggedInUsername = username.toLowerCase();
@@ -47,7 +48,12 @@ function login() {
                 navfooter.style.width = "50px";
                 postslider.style.translate = "-30px -50%";
                 nobody.style.opacity = 0;
-
+                footuser.style.transform = "scale(0.8) rotateY(180deg)";
+                setTimeout(() => {
+                    getMyProfilePicture(data.id);
+                    
+                }, 500);
+                
                 setTimeout(() => {
                     onlinestatus.style.display = "flex";
                     navusername.textContent = capitalizedUsername;

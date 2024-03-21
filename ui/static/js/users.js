@@ -4,13 +4,9 @@ function updateUserStatus() {
     setTimeout(() => {
         GetUnreadMessageDatabase()
         .then(data => {
-            console.log("Data from GetUnreadMessageDatabase:", data);
-
-            // Check if data is null or undefined
             if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
                 data = { unreadednumbeofmessage: [], unreadeduser: [] };
             }
-
             fetch('/getusers')
                 .then(response => response.json())
                 .then(users => {
@@ -30,7 +26,6 @@ function updateUserStatus() {
                         userElement.addEventListener('click', () => addChat(user));
                         userElement.addEventListener('click', () => removeUnread(user));
 
-                        console.log(user.pp)
                         const userImg = document.createElement('img');
                         if (user.pp) {
                             userImg.className = 'user';
@@ -71,7 +66,6 @@ function updateUserStatus() {
 
                         console.log(data.unreadednumbeofmessage, data.unreadeduser, user.id);
 
-                        // Check if data is null or undefined
                         if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
                             return;
                         }

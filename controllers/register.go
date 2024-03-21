@@ -25,6 +25,7 @@ type UserData struct {
 type Resp struct {
 	Msg  string `json:"msg"`
 	Type string `json:"type"`
+	ID   int    `json:"id"`
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {

@@ -14,10 +14,6 @@ function addChat(userName) {
     if (existingChatBlocks >= 2) {
         return;
     } else {
-/* 
-        if (document.getElementById("user" + userName.id).querySelector('.unreaded')) {
-            byenotif(userName.id)
-        } */
         const chatBlock = document.createElement('div');
         chatBlock.classList.add('chatblock');
         chatBlock.id = chatBlockId;
@@ -133,6 +129,7 @@ function sendMp(textarea, receiver_id, chatBlockId) {
     textarea.value = '';
     sendMsg(conn, receiver_id, { value: chatinput }, 'mp', chatblock_id)
     updateUserStatus(chatBlockId, receiver_id);
+/*     unreaded(receiver_id) */
 }
 
 let messageOffset = 10

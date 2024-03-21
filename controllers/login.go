@@ -93,7 +93,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		msg := Resp{Msg: "✅ Successfully logged-in!", Type: "success"}
+		msg := Resp{Msg: "✅ Successfully logged-in!", Type: "success", ID: userID}
 		resp, err := json.Marshal(msg)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to marshal response. "+err.Error(), http.StatusInternalServerError)

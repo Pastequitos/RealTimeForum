@@ -40,8 +40,6 @@ function autoResize(textarea, commentContainer) {
 function submitComment(postId) {
     const commentInput = document.getElementById(`commentinput-${postId}`);
     const commentContent = commentInput.value;
-/*     console.log('Post ID:', postId);
-    console.log('Comment content:', commentContent); */
     fetch(`http://localhost:3003/comment`, {
         method: 'POST',
         headers: {

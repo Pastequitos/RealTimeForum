@@ -9,10 +9,11 @@ const txtnotif = document.querySelector('.notif')
 const progressbar = document.querySelector('.progressbar')
 const navregister = document.getElementById('RegisterMenu')
 const navlogin = document.getElementById('LoginMenu')
-const navusername = document.querySelector('.username')
+const navusername = document.querySelector('.footerusername')
 const display = document.querySelector('.display');
 /* const screen = document.querySelector('.entiredisplay'); */
 let facestatus = "login"
+const footuser = document.querySelector('.footeruser');
 
 
 navregister.addEventListener('click', () => {
@@ -25,6 +26,7 @@ navregister.addEventListener('click', () => {
     fgpassword.classList.add('hide');
 
     setTimeout(() => {
+        
         loginface.classList.add('hide');
         registerface.classList.remove('hide');
         pagetitle.textContent = 'REGISTER';
@@ -89,7 +91,6 @@ document.getElementById('continue').addEventListener('click', function () {
         }, 7000);
         return;
     } else if (!emailRegex.test(email)) {
-        console.log("???")
         cube.style.animation = "errorregister 0.5s ease-in-out forwards";
         notif.style.animation = "shownotif 7s ease-in-out forwards";
         txtnotif.textContent = "❌ Please enter a valid email address.";
@@ -123,8 +124,6 @@ document.querySelector('.settings').addEventListener('click', () => {
     document.getElementById('userContainer').classList.toggle('active');
 
 });
-
-
 
 
 

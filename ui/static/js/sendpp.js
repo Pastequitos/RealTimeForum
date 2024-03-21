@@ -31,7 +31,7 @@ function cropImage(file, callback) {
 
 // Event listener for file input change
 document.getElementById('profilePicture').addEventListener('change', async function(event) {
-    console.log("profile picture");
+/*     console.log("profile picture"); */
     const file = event.target.files[0];
 
     // Crop the image before sending
@@ -80,8 +80,25 @@ async function getProfilePicture() {
     }
 }
 
-document.querySelector('.headerpostcontainer').addEventListener('click', function () {
 
-    getProfilePicture();
-})
+async function getMyProfilePicture(userId) {
+    try {
+        const response = await fetch(`/getpp?id=${userId}`, {
+            method: 'GET',
+            headers: {}
+        });
+        if (response.ok) {
+            const pictureBlob = await response.blob();
 
+            const pictureUrl = URL.createObjectURL(pictureBlob);
+
+            const imgElement = document.querySelector('.footericon.footeruser');
+            imgElement.src = pictureUrl;
+            imgElement.classList.remove('invert');
+        } else {
+            console.error('Failed to retrieve profile picture. Status:', response.status);
+        }
+    } catch (error) {
+        console.error('Error retrieving profile picture:', error);
+    }
+}

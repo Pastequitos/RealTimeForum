@@ -115,6 +115,27 @@ header {
     left: 0;
 }
 
+.footericon {
+    height: 50px;
+    left: 0;
+    position: absolute;
+    transform: scale(0.8);
+    border-radius: 50%;
+
+}
+
+.footerstatus {
+    height: 50px;
+    left: 0;
+    margin-left: 60px;
+}
+
+.navicon {
+    height: 50px;
+    left: 0;
+    position: absolute;
+}
+
 .user {
     height: 50px;
     width: auto;
@@ -125,6 +146,7 @@ header {
     transform: scale(0.8);
     border: 1px solid white ;
 }
+
 
 .settings {
     position: absolute;
@@ -291,6 +313,17 @@ header {
     -webkit-backdrop-filter: blur(5.5px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     transition: all 1s ease-in-out;
+}
+
+.footeruser {
+transition: all 1s cubic-bezier(0.68, -0.2, 0.5, 1), transform 1s ease-in-out, width 1s ease-in-out, filter 0s;
+}
+
+.footerusername {
+    margin-top: 7px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.4rem;
 }
 
 .status {
