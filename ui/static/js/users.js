@@ -183,25 +183,21 @@ async function GetUnreadMessageDatabase() {
 }
 
 async function showProfile(userId) {
-    console.log('showProfile', userId, `/getuserdata?id=${userId}`);
     if (!document.querySelector('.userProfilePage')) {
-
         try {
             const userDataResponse = await fetch(`/getuserdata?id=${userId}`);
             if (!userDataResponse.ok) {
                 throw new Error('Failed to fetch user data');
             }
-            console.log(userDataResponse)
             const userData = await userDataResponse.json();
-            console.log(userData)
 
             // Create the user profile section
-const usercontainer = document.getElementById('userContainer');
-const btmline = document.querySelector('.line.bottomline');
-
+            const usercontainer = document.getElementById('userContainer');
 
             const userProfilePage = document.createElement('section');
             userProfilePage.classList.add('userProfilePage');
+            userProfilePage.setAttribute('id', `userprofile${userId}`);
+
 
 
             const closeBtn = document.createElement('span');
@@ -254,15 +250,48 @@ const btmline = document.querySelector('.line.bottomline');
 
             document.body.appendChild(userProfilePage);
             setTimeout(() => {
-                btmline.classList.add('activecard');
                 usercontainer.classList.add('activecard');
                 userProfilePage.classList.add('activecard');
                 document.querySelector('.menu').classList.add('activecard');
             }, 100);
-
-
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
+    } else if (document.querySelector('.userProfilePage') && !document.getElementById(`userprofile${userId}`)) {
+        const usercontainer = document.getElementById('userContainer');
+        const userProfilePage = document.querySelector('.userProfilePage');
+    
+        usercontainer.classList.remove('activecard');
+        userProfilePage.classList.remove('activecard');
+        document.querySelector('.menu').classList.remove('activecard');
+    
+        setTimeout(async () => {
+            try {
+                const userDataResponse = await fetch(`/getuserdata?id=${userId}`);
+                if (!userDataResponse.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                const userData = await userDataResponse.json();
+                userProfilePage.setAttribute('id', `userprofile${userId}`);
+    
+                userProfilePage.querySelector('.usernameppage').textContent = userData.Username;
+                const profilePictureUrl = await getMyProfilePictureUrl(userData.ID);
+                if (profilePictureUrl) {
+                    userProfilePage.querySelector('.userpppage').src = profilePictureUrl;
+                } else {
+                    userProfilePage.querySelector('.userpppage').src = 'default-profile-picture.jpg';
+                }
+                userProfilePage.querySelector('.nameppage').textContent = `${userData.Firstname} ${userData.Lastname}`;
+                userProfilePage.querySelector('.ageppage').textContent = `${userData.Age} ans`;
+                userProfilePage.querySelector('.genderppage').textContent = userData.Gender;
+    
+                usercontainer.classList.add('activecard');
+                userProfilePage.classList.add('activecard');
+                document.querySelector('.menu').classList.add('activecard');
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }, 700);
     }
+
 }

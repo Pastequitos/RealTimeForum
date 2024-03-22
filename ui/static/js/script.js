@@ -19,7 +19,7 @@ let navfooter = document.querySelector('.navfooter');
 
 
 navregister.addEventListener('click', () => {
-    if (facestatus == "register") {
+    if (facestatus == "register" || pagetitle.id == "logged") {
         return;
     }
     facestatus = "register"
@@ -41,7 +41,7 @@ navregister.addEventListener('click', () => {
 })
 
 navlogin.addEventListener('click', () => {
-    if (facestatus == "login") {
+    if (facestatus == "login" || pagetitle.id == "logged") {
         return;
     }
     facestatus = "login"

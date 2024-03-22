@@ -39,6 +39,7 @@ function login() {
             /* console.log(data); */
             const responseType = data.type;
             if (responseType === "success") {
+
                 loggedInUsername = username.toLowerCase();
                 cube.style.animation = "loggedin 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
                 txtnotif.innerHTML = data.msg + "<br>Welcome " + capitalizedUsername + " !";
@@ -47,7 +48,6 @@ function login() {
                 navfooter.style.width = "50px";
                 postslider.style.translate = "-30px -50%";
                 nobody.style.opacity = 0;
-                
                 footuser.style.transform = "scale(0.8) rotateY(360deg)";
                 setTimeout(async () => {
                     try {
@@ -78,6 +78,7 @@ function login() {
                 }, 7000);
 
                 pagetitle.style.translate = "0px -100px";
+                pagetitle.setAttribute('id', 'logged');
                 setTimeout(() => {
                     display.style.translate = "0px 0px";
                     display.style.opacity = "1";
@@ -117,7 +118,6 @@ function startWS() {
 
         conn.onmessage = function (evt) {
             const data = JSON.parse(evt.data);
-/*             console.log(data) */
             const responseType = data.msg_type;
             if (responseType === "post") {
                 displayPost();
