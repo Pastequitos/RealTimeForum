@@ -1,9 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.sidebar .user').forEach(user => {
-        user.addEventListener('click', () => addChatBlock(user.textContent));
+        user.addEventListener('click', (event) => {
+            if (!event.target.classList.contains('user')) {
+                console.log('Click occurred on a child element of ".user"');
+                // Click occurred on an element with class "user"
+                addChatBlock(user.textContent);
+            } else {
+                // Click occurred on a child element of ".user"
+                // Handle other actions here
+            }
+        });
     });
 });
-
+ */
 function addChat(userName) {
     const chatArea = document.getElementById("chatsContainer");
     const chatBlockId = 'chatblock-' + userName.id;
@@ -24,8 +33,21 @@ function addChat(userName) {
         chatHeader.classList.add('chatHeader')
 
         const chatIcon = document.createElement('img');
-        chatIcon.setAttribute('src', '../static/media/user.png');
-        chatIcon.classList.add('chatIcon', 'invert', 'user')
+
+        setTimeout(async () => {
+            try {
+                const profilePictureUrl = await getMyProfilePictureUrl(userName.id);
+                if (profilePictureUrl) {
+                    chatIcon.src = profilePictureUrl;
+                } else {
+                    console.error('Failed to get profile picture URL.');
+                }
+            } catch (error) {
+                console.error('Error retrieving profile picture URL:', error);
+            }
+        }, 1);
+
+        chatIcon.classList.add('chatIcon', 'user')
         chatHeader.appendChild(chatIcon)
 
         const chatOnlineCircle = document.createElement('span');
@@ -145,9 +167,6 @@ function getMp(receiver_id, chatBlockId) {
     })
         .then(response => response.json())
         .then(data => {
-/*             if (document.getElementById("user" + receiver_id).querySelector('.unreaded')) {
-                byenotif(receiver_id)
-            } */
             if (document.getElementById(chatBlockId)) {
                 const chatdiv = document.getElementById(chatBlockId).querySelector('.chatdiv');
                 const scrollPosition = chatdiv.scrollHeight - chatdiv.scrollTop;

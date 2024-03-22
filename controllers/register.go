@@ -3,6 +3,7 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -29,6 +30,7 @@ type Resp struct {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("register")
 	var user UserData
 
 	json.NewDecoder(r.Body).Decode(&user)

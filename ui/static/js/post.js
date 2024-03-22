@@ -48,6 +48,8 @@ function displayPost() {
         .then(response => response.json())
         .then(data => {
 
+/*             console.log(data); */
+
             const sortedData = data.sort((a, b) => new Date(b.Date) - new Date(a.Date));
 
             postCount = 0;
@@ -66,9 +68,11 @@ function displayPost() {
 let postCount = 0;
 
 function appendPosts(post) {
+/*     console.log(post)
+    console.log(post.UserID) */
 
-    const rightContainer = document.querySelector('.rightside'); // Assuming .rightside is a class
-    const leftContainer = document.querySelector('.leftside'); // Assuming .leftside is a class
+    const rightContainer = document.querySelector('.rightside');
+    const leftContainer = document.querySelector('.leftside');
 
     const postElement = document.createElement('div');
     postElement.setAttribute('data-post-id', post.ID);
@@ -78,9 +82,26 @@ function appendPosts(post) {
     postheaderElement.classList.add('post-header');
     postElement.appendChild(postheaderElement);
 
-    const userppElement = document.createElement('div');
+    const userppElement = document.createElement('img');
     userppElement.classList.add('userpp');
-    userppElement.classList.add('invert');
+    try {
+        const profilePictureUrlPromise = getMyProfilePictureUrl(post.UserID);
+        if (profilePictureUrlPromise) {
+            profilePictureUrlPromise.then(profilePictureUrl => {
+                userppElement.src = profilePictureUrl;
+                userppElement.classList.add('userpp');
+                userppElement.addEventListener('click', () => showProfile(post.UserID));
+
+            }).catch(error => {
+                console.error('Failed to get profile picture URL:', error);
+            });
+        } else {
+            console.error('Failed to get profile picture URL.');
+        }
+    } catch (error) {
+        console.error('Error retrieving profile picture URL:', error);
+    }
+
     postheaderElement.appendChild(userppElement);
 
     const userElement = document.createElement('p');
@@ -217,7 +238,7 @@ function setBackgroundImageFromUnsplash(searchTerm, element) {
                 const imageUrl = data.results[0].urls.regular; // Get the URL of the first image
                 element.style.backgroundImage = `url('${imageUrl}')`; // Set it as the background of the passed element
             } else {
-                console.log('No images found for ' + searchTerm);
+return
             }
         })
         .catch(error => console.error('Error fetching image:', error));

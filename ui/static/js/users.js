@@ -3,98 +3,107 @@ let unreadedCounts = {};
 function updateUserStatus() {
     setTimeout(() => {
         GetUnreadMessageDatabase()
-        .then(data => {
-            if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
-                data = { unreadednumbeofmessage: [], unreadeduser: [] };
-            }
-            fetch('/getusers')
-                .then(response => response.json())
-                .then(users => {
-                    const userContainer = document.getElementById('userContainer');
-                    userContainer.innerHTML = '';
+            .then(data => {
+                if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
+                    data = { unreadednumbeofmessage: [], unreadeduser: [] };
+                }
+                fetch('/getusers')
+                    .then(response => response.json())
+                    .then(users => {
+                        const userContainer = document.getElementById('userContainer');
+                        userContainer.innerHTML = '';
 
-                    // Sort users based on connected status
-                    users.sort((a, b) => b.connected - a.connected);
+                        // Sort users based on connected status
+                        users.sort((a, b) => b.connected - a.connected);
 
-                    // Add online/offline class and create elements for each user
-                    users.forEach(user => {
-                        const userElement = document.createElement('div');
-                        userElement.className = 'userStatus';
-                        userElement.classList.add(user.connected === 1 ? 'online' : 'offline'); // Add online/offline class
+                        // Add online/offline class and create elements for each user
+                        users.forEach(user => {
+                            const userElement = document.createElement('div');
+                            userElement.className = 'userStatus';
+                            userElement.classList.add(user.connected === 1 ? 'online' : 'offline'); // Add online/offline class
 
-                        userElement.id = "user" + user.id;
-                        userElement.addEventListener('click', () => addChat(user));
-                        userElement.addEventListener('click', () => removeUnread(user));
-
-                        const userImg = document.createElement('img');
-                        if (user.pp) {
-                            userImg.className = 'user';
-                            userImg.src = `/getpp?id=${user.id}`;
-                        } else {
-                            userImg.setAttribute('src', '../static/media/user.png');
-                            userImg.style.border = "none";
-                            userImg.className = 'icon invert user';
-                        }
-                        userElement.appendChild(userImg);
-
-                        const statusDiv = document.createElement('div');
-                        statusDiv.className = 'status';
-
-                        const usernameP = document.createElement('p');
-                        usernameP.className = 'username';
-                        usernameP.textContent = user.username.charAt(0).toUpperCase() + user.username.slice(1); // Capitalizing username
-                        statusDiv.appendChild(usernameP);
-
-                        const onlineStatusDiv = document.createElement('div');
-                        onlineStatusDiv.className = 'useronlinestatus';
-
-                        const onlineP = document.createElement('p');
-                        onlineP.textContent = user.connected === 1 ? 'online' : 'offline'; // Adjusting online/offline status
-
-                        const onlineCircleSpan = document.createElement('span');
-                        onlineCircleSpan.className = "onlinecircle";
-                        onlineCircleSpan.style.backgroundColor = user.connected === 1 ? "#3ad323" : "red"; // Adjust for online/offline
-
-                        onlineStatusDiv.appendChild(onlineP);
-                        onlineStatusDiv.appendChild(onlineCircleSpan);
-
-                        statusDiv.appendChild(onlineStatusDiv);
-
-                        userElement.appendChild(statusDiv);
-
-                        userContainer.appendChild(userElement);
-
-                        console.log(data.unreadednumbeofmessage, data.unreadeduser, user.id);
-
-                        if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
-                            return;
-                        }
-
-                        if (!document.getElementById("chatblock-" + user.id)) {
-                            const unreadIndex = data.unreadeduser.indexOf(user.id);
-                            if (unreadIndex !== -1) {
-                                const unreadCountSpan = document.createElement('span');
-                                unreadCountSpan.textContent = data.unreadednumbeofmessage[unreadIndex];
-                                unreadCountSpan.className = 'unread-count';
-                                const unreaded = document.createElement('span');
-                                unreaded.className = 'unreaded';
-                                unreaded.style.right = "-40px"
-                                unreaded.appendChild(unreadCountSpan);
-                                userElement.appendChild(unreaded);
-                                setTimeout(() => {
-                                    unreaded.style.right = "-10px"
-                                }, 100);
+                            userElement.id = "user" + user.id;
+                            userElement.addEventListener('click', (event) => {
+                                if (!event.target.classList.contains('user')) {
+                                    // Click occurred on an element with class "user"
+                                    addChat(user);
+                                    removeUnread(user);
+                                } else {
+                                    // Click occurred on a child element of ".user"
+                                    // Handle other actions here
+                                }
+                            });
+                            const userImg = document.createElement('img');
+                            userImg.addEventListener('click', () => showProfile(user.id));
+                            if (user.pp) {
+                                userImg.className = 'user';
+                                userImg.src = `/getpp?id=${user.id}`;
+                                userImg.style.marginTop = "-1px";
+                            } else {
+                                userImg.setAttribute('src', '../static/media/user.png');
+                                userImg.style.border = "none";
+                                userImg.className = 'icon invert user';
                             }
-                        }
+                            userElement.appendChild(userImg);
+
+                            const statusDiv = document.createElement('div');
+                            statusDiv.className = 'status';
+
+                            const usernameP = document.createElement('p');
+                            usernameP.className = 'username';
+                            usernameP.textContent = user.username.charAt(0).toUpperCase() + user.username.slice(1); // Capitalizing username
+                            statusDiv.appendChild(usernameP);
+
+                            const onlineStatusDiv = document.createElement('div');
+                            onlineStatusDiv.className = 'useronlinestatus';
+
+                            const onlineP = document.createElement('p');
+                            onlineP.textContent = user.connected === 1 ? 'online' : 'offline'; // Adjusting online/offline status
+
+                            const onlineCircleSpan = document.createElement('span');
+                            onlineCircleSpan.className = "onlinecircle";
+                            onlineCircleSpan.style.backgroundColor = user.connected === 1 ? "#3ad323" : "red"; // Adjust for online/offline
+
+                            onlineStatusDiv.appendChild(onlineP);
+                            onlineStatusDiv.appendChild(onlineCircleSpan);
+
+                            statusDiv.appendChild(onlineStatusDiv);
+
+                            userElement.appendChild(statusDiv);
+
+                            userContainer.appendChild(userElement);
+
+                            /*  console.log(data.unreadednumbeofmessage, data.unreadeduser, user.id); */
+
+                            if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
+                                return;
+                            }
+
+                            if (!document.getElementById("chatblock-" + user.id)) {
+                                const unreadIndex = data.unreadeduser.indexOf(user.id);
+                                if (unreadIndex !== -1) {
+                                    const unreadCountSpan = document.createElement('span');
+                                    unreadCountSpan.textContent = data.unreadednumbeofmessage[unreadIndex];
+                                    unreadCountSpan.className = 'unread-count';
+                                    const unreaded = document.createElement('span');
+                                    unreaded.className = 'unreaded';
+                                    unreaded.style.right = "-40px"
+                                    unreaded.appendChild(unreadCountSpan);
+                                    userElement.appendChild(unreaded);
+                                    setTimeout(() => {
+                                        unreaded.style.right = "-10px"
+                                    }, 100);
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching users:', error);
                     });
-                })
-                .catch(error => {
-                    console.error('Error fetching users:', error);
-                });
-        })
-        .catch(error => {
-            console.error('Error fetching unread message database:', error);
-        });
+            })
+            .catch(error => {
+                console.error('Error fetching unread message database:', error);
+            });
     }, 10);
 }
 
@@ -102,27 +111,27 @@ function updateUserStatus() {
 
 
 function unreaded(receiver_id) {
-    console.log('unreaded', receiver_id);
+    /*     console.log('unreaded', receiver_id); */
 
     unreadedCounts[receiver_id] = (unreadedCounts[receiver_id] || 0) + 1;
 
     updateDatabase(receiver_id, unreadedCounts[receiver_id]);
 
-    console.log(`User ${receiver_id} has ${unreadedCounts[receiver_id]} unread messages.`);
+    /*     console.log(`User ${receiver_id} has ${unreadedCounts[receiver_id]} unread messages.`); */
 }
 
 
 
 function removeUnread(user) {
-    console.log(user)
-        const divuser = document.getElementById("user" + user.id);
-        if (!divuser.querySelector('.unreaded')) {
-            return;
-        }
-        divuser.querySelector('.unreaded').style.right = "-50px";
-        setTimeout(() => {
-            divuser.querySelector('.unreaded').remove();
-        }, 1000);
+    /*     console.log(user) */
+    const divuser = document.getElementById("user" + user.id);
+    if (!divuser.querySelector('.unreaded')) {
+        return;
+    }
+    divuser.querySelector('.unreaded').style.right = "-50px";
+    setTimeout(() => {
+        divuser.querySelector('.unreaded').remove();
+    }, 1000);
 
     unreadedCounts[user.id] = 0;
     const unreadCountSpan = document.querySelector(`#user${user.id} .unread-count`);
@@ -134,7 +143,7 @@ function removeUnread(user) {
 }
 
 function updateDatabase(receiver_id, unreadCount) {
-    console.log('updateDatabase', receiver_id, unreadCount);
+    /*     console.log('updateDatabase', receiver_id, unreadCount); */
     let rid = receiver_id;
     const data = {
         receiver_id: rid,
@@ -171,4 +180,89 @@ async function GetUnreadMessageDatabase() {
             console.error('Error fetching unread messages:', error);
             throw error; // Propagate the error
         });
+}
+
+async function showProfile(userId) {
+    console.log('showProfile', userId, `/getuserdata?id=${userId}`);
+    if (!document.querySelector('.userProfilePage')) {
+
+        try {
+            const userDataResponse = await fetch(`/getuserdata?id=${userId}`);
+            if (!userDataResponse.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+            console.log(userDataResponse)
+            const userData = await userDataResponse.json();
+            console.log(userData)
+
+            // Create the user profile section
+const usercontainer = document.getElementById('userContainer');
+const btmline = document.querySelector('.line.bottomline');
+
+
+            const userProfilePage = document.createElement('section');
+            userProfilePage.classList.add('userProfilePage');
+
+
+            const closeBtn = document.createElement('span');
+            closeBtn.classList.add('userbtn', 'user-close-btn');
+            closeBtn.addEventListener('click', () => {
+                userProfilePage.classList.remove('activecard');
+                document.querySelector('.menu').classList.remove('activecard');
+                document.getElementById('userContainer').classList.remove('activecard');
+                setTimeout(() => {
+                    userProfilePage.remove();
+                }, 1000);
+
+            });
+            userProfilePage.appendChild(closeBtn);
+
+            const usernameElement = document.createElement('p');
+            usernameElement.classList.add('usernameppage');
+            usernameElement.textContent = userData.Username;
+            userProfilePage.appendChild(usernameElement);
+
+            const profilePictureUrl = await getMyProfilePictureUrl(userData.ID);
+
+            // Set profile picture
+            const userpppageImage = document.createElement('img');
+            userpppageImage.classList.add('userpppage');
+            if (profilePictureUrl) {
+                userpppageImage.src = profilePictureUrl;
+            } else {
+                // Set a default profile picture if no URL is returned
+                userpppageImage.src = 'default-profile-picture.jpg';
+            }
+            userProfilePage.appendChild(userpppageImage);
+            // Set name
+            const nameElement = document.createElement('p');
+            nameElement.classList.add('nameppage');
+            nameElement.textContent = `${userData.Firstname} ${userData.Lastname}`;
+            userProfilePage.appendChild(nameElement);
+
+            // Set age
+            const ageElement = document.createElement('p');
+            ageElement.classList.add('ageppage');
+            ageElement.textContent = `${userData.Age} ans`;
+            userProfilePage.appendChild(ageElement);
+
+            // Set gender
+            const genderElement = document.createElement('p');
+            genderElement.classList.add('genderppage');
+            genderElement.textContent = userData.Gender;
+            userProfilePage.appendChild(genderElement);
+
+            document.body.appendChild(userProfilePage);
+            setTimeout(() => {
+                btmline.classList.add('activecard');
+                usercontainer.classList.add('activecard');
+                userProfilePage.classList.add('activecard');
+                document.querySelector('.menu').classList.add('activecard');
+            }, 100);
+
+
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
 }

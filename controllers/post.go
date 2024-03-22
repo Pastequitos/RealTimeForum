@@ -18,6 +18,7 @@ type PostData struct {
 	Category  string
 	Date      string
 	NbComment int
+	UserID    string
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
@@ -38,13 +39,19 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		}
 		defer db.Close()
 
+		post.UserID, err = GetIdFromSession(w, r)
+		if err != nil {
+			http.Error(w, "500 internal server error: Failed to get user ID. "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		cookie, _ := r.Cookie("session_token")
 
 		post.Date = time.Now().Format("2006-01-02 15:04:05")
 		post.Username, _ = CurrentUser(cookie.Value)
 		post.NbComment = 0
 
-		_, err = db.Exec("INSERT INTO post (username, title, content, category, date, nbcomment) VALUES (?, ?, ?, ?, ?, ?)", post.Username, post.Title, post.Content, post.Category, post.Date, post.NbComment)
+		_, err = db.Exec("INSERT INTO post (username, title, content, category, date, nbcomment, userid) VALUES (?, ?, ?, ?, ?, ?, ?)", post.Username, post.Title, post.Content, post.Category, post.Date, post.NbComment, post.UserID)
 		if err != nil {
 			http.Error(w, "500 internal server error: Failed to insert post into database. "+err.Error(), http.StatusInternalServerError)
 			return
@@ -78,7 +85,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		var posts []PostData
 		for rowposts.Next() {
 			var p PostData
-			err := rowposts.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Category, &p.Date, &p.NbComment)
+			err := rowposts.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Category, &p.Date, &p.NbComment, &p.UserID)
 			if err != nil {
 				break
 			}

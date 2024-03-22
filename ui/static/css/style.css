@@ -53,6 +53,7 @@ header {
     border-radius: 30px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     overflow: hidden;
+    transition: height 0.5s ease-in-out;
 }
 
 .menu button {
@@ -85,15 +86,13 @@ header {
     margin-bottom: -10px;
     transform: translateY(0px);
     z-index: -1;
-    transition: all 1s ease-in-out, opacity 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out, opacity 0.5s ease-in-out;
     opacity: 1;
 }
 
 .settingdiv.active {
-    transform: translateY(-300px);
+    transform: translateY(-200px);
     opacity: 0;
-    transition: all 1s ease-in-out, opacity 0.5s ease-in-out;
-
 }
 
 
@@ -119,7 +118,7 @@ header {
     height: 50px;
     left: 0;
     position: absolute;
-    transform: scale(0.8);
+    transform: scale(0.8) rotateY(180deg);
     border-radius: 50%;
 
 }
@@ -144,7 +143,7 @@ header {
     background-repeat: no-repeat;
     border-radius: 50%;
     transform: scale(0.8);
-    border: 1px solid white ;
+    border: 2px solid white ;
 }
 
 
@@ -195,25 +194,30 @@ header {
     position: absolute;
     background-color: #ffffff49;
     bottom: 65px;
+    transition: all 0.5s ease-in-out;
 }
+
+
 
 #userContainer {
 /*     display: flex;
     flex-direction: column; */
     top: 270px;
     position: absolute;
-    transition: all 1s ease-in-out;
+    transition: all 0.5s ease-in-out;
     overflow-y: scroll;
     overflow-x: hidden;
     height: 0;
     height: calc(100vh - 390px);
+    mask-image: linear-gradient(to bottom, transparent, black 10px, black 98%, transparent);
+
 }
 
 #userContainer::-webkit-scrollbar {
-    width: 2px;
+    width: 0px;
 }
 
-#userContainer::-webkit-scrollbar-thumb {
+/* #userContainer::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.5);
 }
@@ -221,12 +225,22 @@ header {
 #userContainer::-webkit-scrollbar-track {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.3);
-}
+} */
 
 #userContainer.active {
     top: 52px;
     height: calc(100vh - 172px);
 
+}
+
+#userContainer.bottomactive {
+    transition: all 0.5s ease-in-out;
+    height: calc(100vh - 494px)
+}
+
+#userContainer.bottomactive.active {
+    transition: all 0.5s ease-in-out;
+    height: calc(100vh - 276px);
 }
 
 .userStatus {
@@ -300,8 +314,7 @@ header {
     font-size: 1.7rem;
     font-weight: 600;
     position: absolute;
-    /* height: 50px; */
-    height: 150px;
+    height: 50px;
     width: 230px;
     overflow: hidden;
     color: white;
@@ -312,11 +325,17 @@ header {
     backdrop-filter: blur(5.5px);
     -webkit-backdrop-filter: blur(5.5px);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out, height 0.5s ease-in-out;
+}
+
+
+
+.navfooter.active {
+    height: 150px;
 }
 
 .footeruser {
-transition: all 1s cubic-bezier(0.68, -0.2, 0.5, 1), transform 1s ease-in-out, width 1s ease-in-out, filter 0s;
+transition: all 1s cubic-bezier(0.68, -0.2, 0.5, 1), transform 1s ease-in-out, width 1s ease-in-out, border 0s step-end,margin 0s step-end ,filter 0s step-end;
 }
 
 .footerusername {
@@ -409,4 +428,47 @@ body {
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     transition: all .5s ease-in-out;
+}
+
+.uploadpp {
+opacity: 0;
+position: absolute;
+top: 100px;
+z-index: -9;
+}
+
+.file-input-label {
+    white-space: nowrap;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: white;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 10px;
+    margin: 5px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    backdrop-filter: blur(5.5px);
+    -webkit-backdrop-filter: blur(5.5px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.usersettingsmenu {
+    height: 20px;
+    position: absolute;
+    top: 15px;
+    left: 200px;
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.menu.activecard {
+height: calc(100vh - 410px);
 }

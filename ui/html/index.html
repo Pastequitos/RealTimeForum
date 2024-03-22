@@ -12,19 +12,13 @@
   <link rel="stylesheet" href="../static/css/display.css">
   <link rel="stylesheet" href="../static/css/post.css">
   <link rel="stylesheet" href="../static/css/chat.css">
-
-
-
-
-
-
+  <link rel="stylesheet" href="../static/css/userprofile.css">
 </head>
 
 <body>
   <header>
     <h2 class="pagetitle">LOGIN</h2>
   </header>
-
   <div class="bg">
     <svg xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -54,25 +48,15 @@
           src="../static/media/enter.png">Register</button>
       <button class="menulogin navbtn" type="submit" id="LoginMenu"><img class="icon invert menuicon"
           src="../static/media/login.png">Login</button>
-      <button class="menulogout navbtn" type="submit" id="LogoutMenu" onclick="logout()"><img class="icon invert menuicon"
-          src="../static/media/close.png">Logout</button>
+      <button class="menulogout navbtn" type="submit" id="LogoutMenu" onclick="logout()"><img
+          class="icon invert menuicon" src="../static/media/close.png">Logout</button>
       <span class="line"></span>
     </div>
-
-
     <div class="nobody">Login to see who is online.</div>
-    <!-- 
-    <div class="nobody">nobody currently online<br><sub>invite your friends !</sub></div>
-     -->
     <div id="userContainer"></div>
-
-
-
-
     <span class="line bottomline"></span>
-
     <div class="navfooter">
-      <img class="footericon invert footeruser" src="../static/media/user.png">
+      <img class="footericon footeruser" src="../static/media/userinvert.png">
       <div class="footerstatus">
         <p class="footerusername">Invite</p>
         <div class="onlinestatus">
@@ -80,17 +64,15 @@
           <span class="onlinecircle"></span>
         </div>
       </div>
+      <img class="usersettingsmenu invert" src="../static/media/right-arrow.png">
       <section>
-        <input type="file" id="profilePicture">
-        <button id="sendProfilePicture">Upload</button>
-    
+        <label for="fileInput" class="file-input-label">Change Profile Picture</label>
+        <input type="file" id="fileInput" class="uploadpp" accept="image/*">
       </section>
     </div>
   </nav>
-
   <nav class="settingnav">
   </nav>
-
   <div class="topnotif">
     <p class="notif"></p>
     <span class="progressbar"></span>
@@ -100,7 +82,6 @@
       <div id="chatsContainer">
       </div>
     </div>
-
     <div class="bordertopleft"></div>
     <div class="topleft"></div>
     <svg class="svg" width="100" height="100" viewBox="0 0 48 48">
@@ -145,11 +126,6 @@
   </div>
 
 
-
-
-
-
-
   <div class="createpost" draggable="false">
     <span class="slidermark"></span>
     <p class="slidetocreatepost">Slide to create a post</p>
@@ -163,20 +139,11 @@
     <button class="submitpost" id="submitpost">post</button>
   </div>
 
-
-
-
-
-
-
-
   <div class="cube">
     <div class="resgistercube" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="999999"
       data-tilt-reverse="true" data-tilt-full-page-listening>
-
       <div class="face left">
       </div>
-
       <div class="face login">
         <div class="input">
           <input type="text" id="loginUsername" name="username" placeholder="">
@@ -186,20 +153,14 @@
           <input type="password" id="loginPassword" name="username" placeholder="">
           <label for="username">Password</label>
         </div>
-
         <button class="loginbtn" type="submit" value="Login" id="loginbtn" onclick="login()">Login</button>
-
         <div class="fgpassword">
           <div class="hess"></div>
           <div class="back-arrow"></div>
           <div class="forgettxt">FORGET PASSWORD ?</div>
         </div>
       </div>
-
-
       <div class="face top"></div>
-
-
       <div class="face forgetpassword">
         <div class="backtologin">
           <div class="hess"></div>
@@ -215,12 +176,8 @@
           <label for="email">Email</label>
         </div>
         <button class="rememberpassword" type="submit" value="Register" id="remember">See password</button>
-
       </div>
-
-
       <div class="connectiondata face hide">
-
         <div class="input">
           <input type="text" id="username" name="username" placeholder="">
           <label for="username">Username</label>
@@ -235,9 +192,6 @@
         </div>
         <button class="regbtn" type="submit" id="continue">Continue</button>
       </div>
-
-
-
 
       <div class="userdata face hide">
         <div class="back">
@@ -277,6 +231,11 @@
       </div>
     </div>
   </div>
+
+
+
+
+
   <div id="destroy-box"></div>
   <script src="../static/js/script.js"></script>
   <script src="../static/js/login.js"></script>
@@ -288,11 +247,6 @@
   <script src="../static/js/chat.js"></script>
   <script src="../static/js/users.js"></script>
   <script src="../static/js/sendpp.js"></script>
-
-
-
-
-
   <script src="../static/js/bg.js"></script>
   <script type="text/javascript" src="../static/js/vanilla-tilt.js"></script>
   <script type="text/javascript">

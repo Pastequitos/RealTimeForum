@@ -1,9 +1,9 @@
 // Function to crop the image to a square 200x200 at the middle
 function cropImage(file, callback) {
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         const img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
@@ -20,7 +20,7 @@ function cropImage(file, callback) {
             ctx.drawImage(img, x, y, size, size, 0, 0, canvas.width, canvas.height);
 
             // Convert canvas to Blob
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 callback(blob);
             }, 'image/jpeg');
         };
@@ -30,12 +30,12 @@ function cropImage(file, callback) {
 }
 
 // Event listener for file input change
-document.getElementById('profilePicture').addEventListener('change', async function(event) {
-/*     console.log("profile picture"); */
+document.getElementById('fileInput').addEventListener('change', async function (event) {
+    /*     console.log("profile picture"); */
     const file = event.target.files[0];
 
     // Crop the image before sending
-    cropImage(file, async function(blob) {
+    cropImage(file, async function (blob) {
         const formData = new FormData();
         formData.append('profilePicture', blob);
 
@@ -46,7 +46,11 @@ document.getElementById('profilePicture').addEventListener('change', async funct
             });
 
             if (response.ok) {
-                alert('Profile picture uploaded successfully!');
+                login();
+                navfooter.classList.remove('active');
+                document.getElementById('userContainer').classList.remove('bottomactive');
+                usersettings.style.transform = "rotate(0deg)";
+                document.querySelector('.line.bottomline').style.transform = "translateY(0px)";
             } else {
                 alert('Failed to upload profile picture.');
             }
@@ -81,24 +85,58 @@ async function getProfilePicture() {
 }
 
 
-async function getMyProfilePicture(userId) {
+async function getMyProfilePictureUrl(userId) {
     try {
         const response = await fetch(`/getpp?id=${userId}`, {
             method: 'GET',
             headers: {}
         });
+
         if (response.ok) {
             const pictureBlob = await response.blob();
 
-            const pictureUrl = URL.createObjectURL(pictureBlob);
-
-            const imgElement = document.querySelector('.footericon.footeruser');
-            imgElement.src = pictureUrl;
-            imgElement.classList.remove('invert');
+            // Check if the picture is not empty
+            if (pictureBlob.size > 0) {
+                const pictureUrl = URL.createObjectURL(pictureBlob);
+                return pictureUrl;
+            } else {
+                console.error('Empty picture received.');
+                return null;
+            }
         } else {
             console.error('Failed to retrieve profile picture. Status:', response.status);
+            return null;
         }
     } catch (error) {
         console.error('Error retrieving profile picture:', error);
+        return null;
+    }
+}
+
+async function getMyProfilePictureUrlByUsername(username) {
+    try {
+        const response = await fetch(`/getppbyusername?username=${username}`, {
+            method: 'GET',
+            headers: {}
+        });
+
+        if (response.ok) {
+            const pictureBlob = await response.blob();
+
+            // Check if the picture is not empty
+            if (pictureBlob.size > 0) {
+                const pictureUrl = URL.createObjectURL(pictureBlob);
+                return pictureUrl;
+            } else {
+                console.error('Empty picture received.');
+                return null;
+            }
+        } else {
+            console.error('Failed to retrieve profile picture. Status:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error retrieving profile picture:', error);
+        return null;
     }
 }

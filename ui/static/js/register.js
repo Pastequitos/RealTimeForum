@@ -5,7 +5,7 @@ function register() {
     var password = document.getElementById('password').value;
     var firstname = document.getElementById('firstname').value;
     var lastname = document.getElementById('lastname').value;
-    var age = document.getElementById('age').value;
+    var age = parseInt(document.getElementById('age').value);
     var gender = document.getElementById('gender').value;
 
     console.log(username, email, password, firstname, lastname, age, gender);

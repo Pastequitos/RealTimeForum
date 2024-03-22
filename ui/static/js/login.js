@@ -14,11 +14,10 @@ function login() {
         "password": password
     };
 
-    console.log(data);
+    /* console.log(data); */
 
     const postslider = document.querySelector('.slidetocreatepost');
     let onlinestatus = document.querySelector('.onlinestatus');
-    let navfooter = document.querySelector('.navfooter');
     let capitalizedUsername = username.charAt(0).toUpperCase() + username.slice(1);
     const nobody = document.querySelector('.nobody');
 
@@ -37,7 +36,7 @@ function login() {
             return response.json();
         })
         .then(data => {
-            console.log(data);
+            /* console.log(data); */
             const responseType = data.type;
             if (responseType === "success") {
                 loggedInUsername = username.toLowerCase();
@@ -48,12 +47,27 @@ function login() {
                 navfooter.style.width = "50px";
                 postslider.style.translate = "-30px -50%";
                 nobody.style.opacity = 0;
-                footuser.style.transform = "scale(0.8) rotateY(180deg)";
-                setTimeout(() => {
-                    getMyProfilePicture(data.id);
-                    
-                }, 500);
                 
+                footuser.style.transform = "scale(0.8) rotateY(360deg)";
+                setTimeout(async () => {
+                    try {
+                        const profilePictureUrl = await getMyProfilePictureUrl(data.id);
+                        if (profilePictureUrl) {
+                            const imgElement = document.querySelector('.footericon.footeruser');
+                            imgElement.src = profilePictureUrl;
+                            imgElement.classList.remove('invert');
+                            imgElement.style.border = "2px solid white";
+                            imgElement.style.marginTop = "-2px";
+                            imgElement.addEventListener('click', () => {
+                                showProfile(data.id);
+                            })
+                        } else {
+                            console.error('Failed to get profile picture URL.');
+                        }
+                    } catch (error) {
+                        console.error('Error retrieving profile picture URL:', error);
+                    }
+                }, 500);
                 setTimeout(() => {
                     onlinestatus.style.display = "flex";
                     navusername.textContent = capitalizedUsername;
@@ -67,7 +81,6 @@ function login() {
                 setTimeout(() => {
                     display.style.translate = "0px 0px";
                     display.style.opacity = "1";
-
                     pagetitle.textContent = 'FORUM';
                     pagetitle.style.translate = "0px 0px";
                     fgpassword.classList.remove('hide');
@@ -99,13 +112,12 @@ function startWS() {
         conn = new WebSocket("ws://" + document.location.host + "/ws");
 
         conn.onopen = function () {
-            // Ouverture connexion websocket.
             console.log("WebSocket connection is open");
         };
 
         conn.onmessage = function (evt) {
             const data = JSON.parse(evt.data);
-            console.log(data)
+/*             console.log(data) */
             const responseType = data.msg_type;
             if (responseType === "post") {
                 displayPost();

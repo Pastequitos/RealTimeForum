@@ -11,9 +11,11 @@ const navregister = document.getElementById('RegisterMenu')
 const navlogin = document.getElementById('LoginMenu')
 const navusername = document.querySelector('.footerusername')
 const display = document.querySelector('.display');
-/* const screen = document.querySelector('.entiredisplay'); */
 let facestatus = "login"
 const footuser = document.querySelector('.footeruser');
+const usersettings = document.querySelector('.usersettingsmenu');
+let navfooter = document.querySelector('.navfooter');
+
 
 
 navregister.addEventListener('click', () => {
@@ -26,7 +28,7 @@ navregister.addEventListener('click', () => {
     fgpassword.classList.add('hide');
 
     setTimeout(() => {
-        
+
         loginface.classList.add('hide');
         registerface.classList.remove('hide');
         pagetitle.textContent = 'REGISTER';
@@ -122,8 +124,8 @@ function resetNotif() {
 document.querySelector('.settings').addEventListener('click', () => {
     document.querySelector('.settingdiv').classList.toggle('active');
     document.getElementById('userContainer').classList.toggle('active');
-
 });
+
 
 
 
@@ -155,12 +157,23 @@ function sendMsg(conn, rid, msg, msg_type, chatblock_id) {
     console.log(msgData)
 
     conn.send(JSON.stringify(msgData))
-        
+
     msg.value = "";
     return false;
 };
 
 
+usersettings.addEventListener('click', () => {
+    navfooter.classList.toggle('active');
+    document.getElementById('userContainer').classList.toggle('bottomactive');
+    usersettings.style.transform = "rotate(0deg)";
+    document.querySelector('.line.bottomline').style.transform = "translateY(0px)";
 
+    if (navfooter.classList.contains('active')) {
+        document.querySelector('.line.bottomline').style.transform = "translateY(-100px)";
+        usersettings.style.transform = "rotate(90deg)";
+        
+    }
+});
 
 

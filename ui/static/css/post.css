@@ -6,6 +6,7 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 20px;
+    padding-top: 18px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
     backdrop-filter: blur(5.5px);
     -webkit-backdrop-filter: blur(5.5px);
@@ -136,6 +137,7 @@
 
 .postusername {
     font-weight: bold;
+    font-size: 25px;
 }
 
 .options {
@@ -150,6 +152,8 @@
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    border-radius: 50%;
+    border: 2px solid white;
 }
 
 
