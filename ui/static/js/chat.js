@@ -223,7 +223,18 @@ function createMessageDiv(msg, receiver_id) {
 
     const messageDate = document.createElement('p');
     messageDate.className = 'timechat';
-    messageDate.textContent = msg.date; // Format the date as needed
+    
+    // Assuming msg.date is a string representation of a date (e.g., '2024-04-02T12:30:45')
+    const date = new Date(msg.date);
+    
+    // Format the date as needed (e.g., toLocaleString())
+    const formattedDate = date.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+    
+    messageDate.textContent = formattedDate;
     messageDiv.appendChild(messageDate);
 
     return messageDiv;
@@ -234,17 +245,22 @@ function unreadedMessages(receiver_id, chatBlockId) {
         console.log('This chat is already open.');
         return;
     } else {
+ 
+        // Create a new audio element
+        const audio = new Audio("../static/media/notif.wav");
+        // Play the sound
+        audio.play();
+
         const user = document.getElementById("user" + receiver_id);
         const unreaded = document.createElement('span');
         unreaded.className = 'unreaded';
-        unreaded.style.right = "-50px"
+        unreaded.style.right = "-50px";
         user.appendChild(unreaded);
         setTimeout(() => {
-            unreaded.style.right = "-10px"
+            unreaded.style.right = "-10px";
         }, 100);
     }
 }
-
 
 
 

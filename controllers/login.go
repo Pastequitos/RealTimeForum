@@ -36,7 +36,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var storedPassword string
 	var userID int
 
-	err = db.QueryRow("SELECT id, password FROM user_account_data WHERE username=?", login.Username).Scan(&userID, &storedPassword)
+	err = db.QueryRow("SELECT id, password FROM user_account_data WHERE username=? OR email=?", login.Username, login.Username).Scan(&userID, &storedPassword)
+
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("Username not found")

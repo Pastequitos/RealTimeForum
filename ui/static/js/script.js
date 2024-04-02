@@ -26,9 +26,9 @@ navregister.addEventListener('click', () => {
     cube.style.transform = "rotateY(90deg) rotateX(-90deg) rotateZ(180deg)";
     pagetitle.style.translate = "0px -100px";
     fgpassword.classList.add('hide');
-
+    
     setTimeout(() => {
-
+        
         loginface.classList.add('hide');
         registerface.classList.remove('hide');
         pagetitle.textContent = 'REGISTER';
@@ -37,7 +37,7 @@ navregister.addEventListener('click', () => {
     setTimeout(() => {
         userdataface.classList.remove('hide');
     }, 2000);
-
+    console.log("facestatus :", facestatus)
 })
 
 navlogin.addEventListener('click', () => {
@@ -59,17 +59,21 @@ navlogin.addEventListener('click', () => {
         pagetitle.style.translate = "0px 0px";
         fgpassword.classList.remove('hide');
     }, 1100);
+    console.log("facestatus :", facestatus)
+
 })
 
 document.querySelector('.backtologin').addEventListener('click', () => {
     facestatus = "login"
     cube.style.transform = "rotateY(0deg) rotateX(0deg) rotateZ(0deg)";
+    console.log("facestatus :", facestatus)
 });
 
 
 document.querySelector('.fgpassword').addEventListener('click', () => {
     facestatus = "login"
     cube.style.transform = "rotateY(-180deg) rotateX(0deg) rotateZ(180deg)";
+    console.log("facestatus :", facestatus)
 });
 
 document.getElementById('continue').addEventListener('click', function () {

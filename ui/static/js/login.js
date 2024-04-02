@@ -39,6 +39,11 @@ function login() {
             /* console.log(data); */
             const responseType = data.type;
             if (responseType === "success") {
+                setTimeout(() => {
+                    document.getElementById('userContainer').style.translate = "-250px 0px";
+                }, 10);
+                
+
 
                 loggedInUsername = username.toLowerCase();
                 cube.style.animation = "loggedin 2s cubic-bezier(0.68,-0.2,0.265,1) forwards";
@@ -49,13 +54,26 @@ function login() {
                 postslider.style.translate = "-30px -50%";
                 nobody.style.opacity = 0;
                 footuser.style.transform = "scale(0.8) rotateY(360deg)";
+
+
+                setTimeout(() => {
+                document.getElementById('userContainer').style.translate = "0px 0px";
+                document.getElementById('userContainer').style.opacity = 1;
+                }, 100);
+
+                if (!document.querySelector('.settingdiv').classList.contains('active') && !document.getElementById('userContainer').classList.contains('active')) {
+                    document.querySelector('.settingdiv').classList.add('active');
+                    document.getElementById('userContainer').classList.add('active');
+                }
+                
+                
+                const usersettingsmenu = document.querySelector('.usersettingsmenu');
                 setTimeout(async () => {
                     try {
                         const profilePictureUrl = await getMyProfilePictureUrl(data.id);
                         if (profilePictureUrl) {
                             const imgElement = document.querySelector('.footericon.footeruser');
                             imgElement.src = profilePictureUrl;
-                            imgElement.classList.remove('invert');
                             imgElement.style.border = "2px solid white";
                             imgElement.style.marginTop = "-2px";
                             imgElement.addEventListener('click', () => {
@@ -69,6 +87,7 @@ function login() {
                     }
                 }, 500);
                 setTimeout(() => {
+                    usersettingsmenu.style.display = "block";
                     onlinestatus.style.display = "flex";
                     navusername.textContent = capitalizedUsername;
                     navfooter.style.width = "230px";

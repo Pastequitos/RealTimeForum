@@ -7,17 +7,37 @@ function updateUserStatus() {
                 if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
                     data = { unreadednumbeofmessage: [], unreadeduser: [] };
                 }
+                console.log(data)
                 fetch('/getusers')
                     .then(response => response.json())
                     .then(users => {
                         const userContainer = document.getElementById('userContainer');
                         userContainer.innerHTML = '';
 
-                        // Sort users based on connected status
-                        users.sort((a, b) => b.connected - a.connected);
+                // Separate users with an existing chat from those without
+                const usersWithChat = [];
+                const usersWithoutChat = [];
+
+                users.forEach(user => {
+                    if ((user.date != "")) {
+                        usersWithChat.push(user);
+                    } else {
+                        usersWithoutChat.push(user);
+                    }
+                });
+
+                        // Sort users alphabetically
+                        usersWithChat.sort((a, b) => b.date.localeCompare(a.date));
+                        usersWithoutChat.sort((a, b) => a.username.localeCompare(b.username));
+
+                        console.log(usersWithChat)
+                        console.log(usersWithoutChat)
+
+                        // Concatenate users with chat and users without chat
+                        const sortedUsers = usersWithChat.concat(usersWithoutChat);
 
                         // Add online/offline class and create elements for each user
-                        users.forEach(user => {
+                        sortedUsers.forEach(user => {
                             const userElement = document.createElement('div');
                             userElement.className = 'userStatus';
                             userElement.classList.add(user.connected === 1 ? 'online' : 'offline'); // Add online/offline class
@@ -40,9 +60,9 @@ function updateUserStatus() {
                                 userImg.src = `/getpp?id=${user.id}`;
                                 userImg.style.marginTop = "-1px";
                             } else {
-                                userImg.setAttribute('src', '../static/media/user.png');
+                                userImg.setAttribute('src', '../static/media/userinvert.png');
                                 userImg.style.border = "none";
-                                userImg.className = 'icon invert user';
+                                userImg.className = 'icon user';
                             }
                             userElement.appendChild(userImg);
 
@@ -71,10 +91,6 @@ function updateUserStatus() {
 
                             userElement.appendChild(statusDiv);
 
-                            userContainer.appendChild(userElement);
-
-                            /*  console.log(data.unreadednumbeofmessage, data.unreadeduser, user.id); */
-
                             if (!data || !data.unreadednumbeofmessage || !data.unreadeduser) {
                                 return;
                             }
@@ -95,6 +111,8 @@ function updateUserStatus() {
                                     }, 100);
                                 }
                             }
+
+                            userContainer.appendChild(userElement);
                         });
                     })
                     .catch(error => {
@@ -149,7 +167,7 @@ function updateDatabase(receiver_id, unreadCount) {
         receiver_id: rid,
         unread_count: unreadCount
     };
-    console.log(data)
+/*     console.log(data) */
 
     fetch('/updateUnreadMessages', {
         method: 'POST',

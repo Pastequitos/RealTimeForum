@@ -210,22 +210,12 @@ header {
     height: 0;
     height: calc(100vh - 390px);
     mask-image: linear-gradient(to bottom, transparent, black 10px, black 98%, transparent);
-
+    opacity: 0;
 }
 
 #userContainer::-webkit-scrollbar {
     width: 0px;
 }
-
-/* #userContainer::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-#userContainer::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.3);
-} */
 
 #userContainer.active {
     top: 52px;
@@ -461,6 +451,7 @@ z-index: -9;
 }
 
 .usersettingsmenu {
+    display: none;
     height: 20px;
     position: absolute;
     top: 15px;

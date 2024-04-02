@@ -228,7 +228,7 @@ function checkIfLiked(postId, callback) {
 }
 
 function setBackgroundImageFromUnsplash(searchTerm, element) {
-    const accessKey = 'CuQwGV2t54kmskHozR2lQvRMNWTwhyLAKgRgHqcLJ-M'; // Use your actual Unsplash Access Key
+    const accessKey = 'CuQwGV2t54kmskHozR2lQvRMNWTwhyLAKgRgHqcLJ-M';
     const url = `https://api.unsplash.com/search/photos?page=1&query=${encodeURIComponent(searchTerm)}&client_id=${accessKey}`;
 
     fetch(url)
@@ -289,7 +289,7 @@ const onMouseDown = (e) => {
 
 const onMouseMove = (e) => {
     const dx = e.clientX - startX;
-    if (Math.abs(dx) > 5) { // Check if movement is significant (more than 5px)
+    if (Math.abs(dx) > 5) {
         isDragging = true;
         hasMoved = true;
         let newRight = Math.max(0, startRight - dx);
